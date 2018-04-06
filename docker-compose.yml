@@ -5,7 +5,7 @@ services:
     image: jguyomard/laravel-php:7.2
     volumes:
       - ./:/var/www/
-      - $HOME/.composer/:$HOME/.composer/
+#     - $HOME/.composer/:$HOME/.composer/
     environment:
       - "DB_HOST=mysql"
       - "DB_DATABASE=homestead"
@@ -30,6 +30,7 @@ services:
       - "MYSQL_DATABASE=homestead"
       - "MYSQL_USER=homestead"
       - "MYSQL_PASSWORD=homestead"
+      - "COMPOSE_CONVERT_WINDOWS_PATHS=1"
 #    ports:
 #        - "3306:3306"
 

@@ -10,7 +10,6 @@
         "google/apiclient": "^2.0",
         "laravel/framework": "5.6.*",
         "laravel/tinker": "^1.0",
-        "google/apiclient": "^2.0",
         "laravelcollective/html": "~5.0",
         "illuminate/html": "^5.0"
     },
