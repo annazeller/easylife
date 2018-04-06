@@ -30,3 +30,6 @@ Route::group(['middleware' => 'auth'], function () {
 Route::get('/home', 'ToDoController@index');
 
 Route::post('/deleteAjax', 'ToDoController@ajaxDelete');
+
+Route::resource('todos','ToDoController');
+

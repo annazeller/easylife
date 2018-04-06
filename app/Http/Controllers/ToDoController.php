@@ -39,7 +39,7 @@ class ToDoController extends Controller
         }
     }
 
-    public function store(){
+    public function store(Request $r){
         if(Auth::check()) {
             $rules = array(
                 'title' => 'required',
@@ -50,23 +50,23 @@ class ToDoController extends Controller
             $validator = Validator::make(Input::all(), $rules);
 
             if ($validator->fails()) {
-                return Redirect::to('/index.php/home/create')
+                return Redirect::to('/home')
                     ->withErrors($validator)
                     ->withInput(Input::except('password'));
             } else {
                 $user = Auth::user();
 
                 $todo = new ToDoModel();
-                $todo->title = Input::get('title');
-                $todo->description = Input::get('description');
-                $todo->location = Input::get('location');
-                $todo->priority = Input::get('priority');
-                $todo->duration = Input::get('duration');;
+                $todo->title = $r->title;
+                $todo->description = $r->description;
+                $todo->location = $r->location;
+                $todo->priority = $r->priority;
+                $todo->duration = $r->duration;
 
                 $todo->userId = $user->id;
                 $todo->save();
 
-                return Redirect::to('home');
+                return response()->json($todo);
             }
         }
     }
@@ -81,7 +81,7 @@ class ToDoController extends Controller
         }
     }
 
-    public function update($id)
+    public function update(Request $r, $id)
     {
         if(Auth::check()) {
             $rules = array(
@@ -97,26 +97,24 @@ class ToDoController extends Controller
                     ->withInput(Input::except('password'));
             } else {
                 $todo = ToDoModel::find($id);
-                $todo->title = Input::get('title');
-                $todo->description = Input::get('description');
-                $todo->location = Input::get('location');
-                $todo->priority = Input::get('priority');
-                $todo->duration = Input::get('duration');
+                $todo->title = $r->title;
+                $todo->description = $r->description;
+                $todo->location = $r->location;
+                $todo->priority = $r->priority;
+                $todo->duration =  $r->duration;
                 $todo->save();
 
-                return Redirect::to('home');
+                return response()->json($todo);
             }
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $r)
     {
-        if(Auth::check()) {
-            $todo = ToDoModel::find($id);
-            $todo->delete();
+        $elementid = $r->id;
+        ToDoModel::find ( $elementid )->delete();
 
-            return Redirect::to('home');
-        }
+        return response()->json();
     }
 
     public function ajaxDelete(Request $r)
