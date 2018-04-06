@@ -20,3 +20,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('cal', 'gCalendarController');
 Route::get('oauth', ['as' => 'oauthCallback', 'uses' => 'gCalendarController@oauth']);
+
+Route::get('/home', 'ToDoController@index');
+
+Route::post('/deleteAjax', 'ToDoController@ajaxDelete');
+
