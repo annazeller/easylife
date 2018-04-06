@@ -23,3 +23,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('cal', 'gCalendarController');
 	Route::get('oauth', ['as' => 'oauthCallback', 'uses' => 'gCalendarController@oauth']);
 });
+
+Route::get('/home', 'ToDoController@index');
+
+Route::post('/deleteAjax', 'ToDoController@ajaxDelete');
