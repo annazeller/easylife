@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         DB::table('users')->insert([
             'name' => "testuser",
-            'email' => str_random(10),
+            'email' => "test@user.de",
             'password' => 123456,
         ]);
 
