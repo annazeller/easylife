@@ -43,6 +43,7 @@ class gCalendarController extends Controller
         $client->setHttpClient($guzzleClient);
 
         $this->client = $client;
+
     }
     /**
      * Display a listing of the resource.
@@ -51,18 +52,11 @@ class gCalendarController extends Controller
      */
     public function index()
     {
-        session_start();
 
         $user = Auth::user();
-
-        $gcalendar_integration_active = $user->gcalendar_integration_active;
-        $gcalendar_credentials = $user->gcalendar_credentials;
-
-
-
         if ($user->gcalendar_integration_active) {
-            $this->client->setAccessToken($user->gcalendar_credentials);
             
+            $this->client->setAccessToken($user->gcalendar_credentials);
             if ($this->client->isAccessTokenExpired()) {
                 $accessToken = $this->client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
                 $user->update([
@@ -73,8 +67,36 @@ class gCalendarController extends Controller
             $service = new Google_Service_Calendar($this->client);
             $calendarId = 'primary';
 
-            $results = $service->events->listEvents($calendarId);
-            return $results->getItems();
+            $optParams = array(
+                'orderBy' => 'startTime',
+                'singleEvents' => true,
+                'timeMin' => '2017-06-03T10:00:00-07:00',
+                'timeMax' => '2019-06-03T10:00:00-23:00',
+            );
+
+            // fullcalendar construction
+            $result=$service->events->listEvents($calendarId, $optParams);
+            $events=$result->getItems();
+            $data =[];
+            foreach ($events as $event) {
+                $subArr=[
+                    'id'=>$event->id,
+                    'title'=>$event->getSummary(),
+                    'start'=>$event->getStart()->getDateTime(),
+                    'end'=>$event->getEnd()->getDateTime(),
+                ];
+                array_push($data,$subArr);
+            }
+
+
+            // Check if we have any events returned
+            if (count($result->getItems()) > 0) {
+                //Return wenn es Einträge gibt, die den Params entsprechen
+                return $data;
+            } else {
+                // TO DO: Return wenn es keine Einträge gibt
+                return dd($user); 
+            }
         } else {
             return redirect()->route('oauthCallback');
         }
@@ -83,8 +105,6 @@ class gCalendarController extends Controller
     
     public function oauth(Request $request)
     {
-        
-        session_start();
         $input = $request->all();
 
         $user = Auth::user();
@@ -110,5 +130,183 @@ class gCalendarController extends Controller
 
     }
 
-    
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('calendar.createEvent');
+    }
+
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        session_start();
+        $startDateTime = $request->start_date;
+        $endDateTime = $request->end_date;
+
+        $user = Auth::user();
+        if ($user->gcalendar_integration_active) {
+            
+            $this->client->setAccessToken($user->gcalendar_credentials);
+            if ($this->client->isAccessTokenExpired()) {
+                $accessToken = $this->client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
+                $user->update([
+                    'gcalendar_credentials' => json_encode($accessToken),
+                ]);
+            }
+
+            $service = new Google_Service_Calendar($this->client);
+            
+            $calendarId = 'primary';
+            $event = new Google_Service_Calendar_Event([
+                'summary' => $request->title,
+                'description' => $request->description,
+                'start' => ['dateTime' => $startDateTime],
+                'end' => ['dateTime' => $endDateTime],
+                'reminders' => ['useDefault' => true],
+            ]);
+            $results = $service->events->insert($calendarId, $event);
+            if (!$results) {
+                return response()->json(['status' => 'error', 'message' => 'Something went wrong']);
+            }
+            return response()->json(['status' => 'success', 'message' => 'Event Created']);
+
+        } else {
+            return redirect()->route('oauthCallback');
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $user = Auth::user();
+        if ($user->gcalendar_integration_active) {
+            
+            $this->client->setAccessToken($user->gcalendar_credentials);
+            if ($this->client->isAccessTokenExpired()) {
+                $accessToken = $this->client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
+                $user->update([
+                    'gcalendar_credentials' => json_encode($accessToken),
+                ]);
+            }
+
+            $service = new Google_Service_Calendar($this->client);
+            $event = $service->events->get('primary', $eventId);
+            if (!$event) {
+                return response()->json(['status' => 'error', 'message' => 'Something went wrong']);
+            }
+            return response()->json(['status' => 'success', 'data' => $event]);
+        } else {
+            return redirect()->route('oauthCallback');
+        }
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $user = Auth::user();
+        if ($user->gcalendar_integration_active) {
+            
+            $this->client->setAccessToken($user->gcalendar_credentials);
+            if ($this->client->isAccessTokenExpired()) {
+                $accessToken = $this->client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
+                $user->update([
+                    'gcalendar_credentials' => json_encode($accessToken),
+                ]);
+            }
+
+            $service = new Google_Service_Calendar($this->client);
+
+            $startDateTime = Carbon::parse($request->start_date)->toRfc3339String();
+            $eventDuration = 30; //minutes if no EndDate is set
+
+            if ($request->has('end_date')) {
+                $endDateTime = Carbon::parse($request->end_date)->toRfc3339String();
+            } else {
+                $endDateTime = Carbon::parse($request->start_date)->addMinutes($eventDuration)->toRfc3339String();
+            }
+            // retrieve the event from the API.
+            $event = $service->events->get('primary', $eventId);
+
+            $event->setSummary($request->title);
+            $event->setDescription($request->description);
+            //start time
+            $start = new Google_Service_Calendar_EventDateTime();
+            $start->setDateTime($startDateTime);
+            $event->setStart($start);
+            //end time
+            $end = new Google_Service_Calendar_EventDateTime();
+            $end->setDateTime($endDateTime);
+            $event->setEnd($end);
+            $updatedEvent = $service->events->update('primary', $event->getId(), $event);
+
+            if (!$updatedEvent) {
+                return response()->json(['status' => 'error', 'message' => 'Something went wrong']);
+            }
+
+            return response()->json(['status' => 'success', 'data' => $updatedEvent]);
+
+        } else {
+            return redirect()->route('oauthCallback');
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $user = Auth::user();
+        if ($user->gcalendar_integration_active) {
+            
+            $this->client->setAccessToken($user->gcalendar_credentials);
+            if ($this->client->isAccessTokenExpired()) {
+                $accessToken = $this->client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
+                $user->update([
+                    'gcalendar_credentials' => json_encode($accessToken),
+                ]);
+            }
+
+            $service = new Google_Service_Calendar($this->client);
+
+            $service->events->delete('primary', $eventId);
+
+        } else {
+            return redirect()->route('oauthCallback');
+        }
+    }
 }

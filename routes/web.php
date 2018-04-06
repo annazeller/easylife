@@ -22,6 +22,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('cal', 'gCalendarController');
 	Route::get('oauth', ['as' => 'oauthCallback', 'uses' => 'gCalendarController@oauth']);
+	Route::get('calendar', function() {
+		return view('calendar.index');
+	});
 });
 
 Route::get('/home', 'ToDoController@index');
