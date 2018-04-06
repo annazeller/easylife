@@ -11,17 +11,17 @@ Change directory
 
     cd easylife
 
-Dependencies installieren
-
-    composer install
-
 Docker Container bauen und hochfahren
 
     docker-compose up -d
 
+Dependencies installieren
+
+ 	docker-compose exec php composer install
+
 Migration durchführen
 
-  	docker-compose exec app php artisan migrate
+  	docker-compose exec php php artisan migrate
   
 Aufrufen unter
 
