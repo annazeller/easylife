@@ -36,8 +36,6 @@ class gCalendarController extends Controller
         // Set the redirect URL back to the site to handle the OAuth2 response. This handles both the success and failure journeys.
         $rurl = action('gCalendarController@oauth');
         $client->setRedirectUri($rurl);
-        // Set state allows us to match the consent to a specific user
-        $client->setState(Auth::id());
         // The Google Client gives us a method for creating the 
         $client->createAuthUrl();
 
@@ -89,16 +87,16 @@ class gCalendarController extends Controller
         session_start();
         $input = $request->all();
 
-        $user = $request->user();
+        $user = Auth::user();
 
-        if (! isset($_GET['code'])) {
+        if (! isset($input['code'])) {
             $auth_url = $this->client->createAuthUrl();
             $filtered_url = filter_var($auth_url, FILTER_SANITIZE_URL);
             return redirect($filtered_url);
 
-        } else {
+        } elseif (isset($input['code'])) {
 
-            $this->client->authenticate($_GET['code']);
+            $this->client->authenticate($input['code']);
             $accessToken = $this->client->getAccessToken();
 
             $user->update([
@@ -112,3 +110,5 @@ class gCalendarController extends Controller
 
     }
 
+    
+}
