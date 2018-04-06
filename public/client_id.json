@@ -1,0 +1,9 @@
+{
+	"web":{
+		"client_id":"982527132018-u6p8e6l9dd2p70ivrj3h86qu3moqmcc7.apps.googleusercontent.com",
+		"project_id":"easylife-200119","auth_uri":"https://accounts.google.com/o/oauth2/auth",
+		"token_uri":"https://accounts.google.com/o/oauth2/token",
+		"auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs",
+		"client_secret":"ttwccBph6caWpg0chzzqQLZ3"
+	}
+}
