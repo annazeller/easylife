@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 
 @section('content')
@@ -8,7 +8,7 @@
         }
     </style>
     <!-- Neues ToDo erstellen -->
-    <button id="buttonNewToDO" type="button" data-toggle="modal" data-target="#create">Neue Aufgabe</button>
+    <button class="btn btn-default" id="buttonNewToDO" type="button" data-toggle="modal" data-target="#create">Neue Aufgabe</button>
 
     <!-- Liste aller persönlichen ToDos -->
     <div id="todos">
@@ -93,7 +93,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary editsubmit" data-dismiss="modal">Speichern</button>
+                    <button type="button" class="btn btn-success editsubmit" data-dismiss="modal">Speichern</button>
                 </div>
             </div>
         </div>
@@ -144,7 +144,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary createsubmit" data-dismiss="modal">Speichern</button>
+                    <button type="button" class="btn btn-success createsubmit" data-dismiss="modal">Speichern</button>
                 </div>
             </div>
         </div>
