@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('content')
     <form action="{{route('cal.store')}}" method="POST" role="form">

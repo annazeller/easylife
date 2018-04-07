@@ -4,45 +4,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Helpers\GoogleClientHelper;
 use Google_Client;
 use Google_Service_Calendar;
 use Google_Service_Calendar_Event;
 use Google_Service_Calendar_EventDateTime;
 use Auth;
 use App\User;
+use App\Calendar;
+use App\Event;
 
 class gCalendarController extends Controller
 {
 
     protected $client;
 
-    public function __construct()
+    public function __construct(GoogleClientHelper $googleClientHelper)
     {
 
-        //Initialise the client
-        $client = new Google_Client();
-        // Set the application name, this is included in the User-Agent HTTP header.
-        $client->setApplicationName('easyLife Calendar');
-        // Set the authentication credentials we downloaded from Google.
-        $client->setAuthConfig('client_id.json');
-        // Setting offline here means we can pull data from the user's calendar when they are not actively using the site.
-        $client->setAccessType("offline");
-        // This will include any other scopes (Google APIs) previously granted by the user
-        $client->setIncludeGrantedScopes(true);
-        // Set this to force to consent form to display.
-        $client->setApprovalPrompt('force');
-        // Add the Google Calendar scope to the request.
-        $client->addScope(Google_Service_Calendar::CALENDAR);
-        // Set the redirect URL back to the site to handle the OAuth2 response. This handles both the success and failure journeys.
-        $rurl = action('gCalendarController@oauth');
-        $client->setRedirectUri($rurl);
-        // The Google Client gives us a method for creating the 
-        $client->createAuthUrl();
-
-        $guzzleClient = new \GuzzleHttp\Client(array('curl' => array(CURLOPT_SSL_VERIFYPEER => false)));
-        $client->setHttpClient($guzzleClient);
-
-        $this->client = $client;
+        $this->client = $googleClientHelper->client();
 
     }
     /**
@@ -50,6 +30,7 @@ class gCalendarController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    //DEPRECATED aber vielleicht brauchen wir sie noch für irgendwas
     public function index()
     {
 
@@ -65,7 +46,8 @@ class gCalendarController extends Controller
             }
 
             $service = new Google_Service_Calendar($this->client);
-            $calendarId = 'primary';
+            $calendarId = Auth::user()->default_calendar; //to do: default calendar field setzen
+            $calendarId = 'primary'; //to do: löschen, testing
 
             $optParams = array(
                 'orderBy' => 'startTime',
@@ -89,7 +71,7 @@ class gCalendarController extends Controller
             }
 
 
-            // Check if we have any events returned
+            // Check ob es Events gibt
             if (count($result->getItems()) > 0) {
                 //Return wenn es Einträge gibt, die den Params entsprechen
                 return $data;
@@ -102,6 +84,12 @@ class gCalendarController extends Controller
         }
 
     }
+
+    public function dashboard(Request $request)
+   {
+        $this->client->setAccessToken(Auth::user()->gcalendar_credentials);
+        return view('dashboard');
+   }
     
     public function oauth(Request $request)
     {
@@ -309,4 +297,315 @@ class gCalendarController extends Controller
             return redirect()->route('oauthCallback');
         }
     }
+
+    public function createCalendar(Request $request)
+   {
+        $this->client->setAccessToken(Auth::user()->gcalendar_credentials);
+        return view('calendar.create_calendar');
+   }
+
+
+   public function doCreateCalendar(Request $request, Calendar $calendar)
+   {
+        $this->client->setAccessToken(Auth::user()->gcalendar_credentials);
+        $this->validate($request, [
+            'title' => 'required|min:4'
+        ]);
+
+        $title = $request->input('title');
+        $timezone = env('APP_TIMEZONE');
+
+        $cal = new \Google_Service_Calendar($this->client);
+
+        $google_calendar = new \Google_Service_Calendar_Calendar($this->client);
+        $google_calendar->setSummary($title);
+        $google_calendar->setTimeZone($timezone);
+
+        $created_calendar = $cal->calendars->insert($google_calendar);
+
+        $calendar_id = $created_calendar->getId();
+
+        $calendar->user_id = Auth::id();
+        $calendar->title = $title;
+        $calendar->calendar_id = $calendar_id;
+        $calendar->sync_token = '';
+        $calendar->save();
+
+        return redirect('/calendar/create')
+            ->with('message', [
+                'type' => 'success', 'text' => 'Calendar was created!'
+            ]);
+   }
+
+
+   public function createEvent(Calendar $calendar, Request $request)
+   {
+        $this->client->setAccessToken(Auth::user()->gcalendar_credentials);
+        $user_id = Auth::id();
+        $calendars = $calendar
+            ->where('user_id', '=', $user_id)->get();
+        $page_data = [
+            'calendars' => $calendars
+        ];
+        return view('calendar.create_event', $page_data);
+   }
+
+
+   public function doCreateEvent(Event $evt, Request $request)
+   {
+        $this->client->setAccessToken(Auth::user()->gcalendar_credentials);
+        $this->validate($request, [
+            'title' => 'required',
+            'calendar_id' => 'required',
+            'datetime_start' => 'required|date',
+            'datetime_end' => 'required|date'
+        ]);
+
+        $title = $request->input('title');
+        $calendar_id = $request->input('calendar_id');
+        $start = $request->input('datetime_start');
+        $end = $request->input('datetime_end');
+
+        $start_datetime = Carbon::createFromFormat('d.m.Y H:i', $start);
+        $end_datetime = Carbon::createFromFormat('d.m.Y H:i', $end);
+
+        $cal = new \Google_Service_Calendar($this->client);
+        $event = new \Google_Service_Calendar_Event();
+        $event->setSummary($title);
+
+        $start = new \Google_Service_Calendar_EventDateTime();
+        $start->setDateTime($start_datetime->toAtomString());
+        $event->setStart($start);
+        $end = new \Google_Service_Calendar_EventDateTime();
+        $end->setDateTime($end_datetime->toAtomString());
+        $event->setEnd($end);
+
+        //attendee
+        if ($request->has('attendee_name')) {
+            $attendees = [];
+            $attendee_names = $request->input('attendee_name');
+            $attendee_emails = $request->input('attendee_email');
+
+            foreach ($attendee_names as $index => $attendee_name) {
+                $attendee_email = $attendee_emails[$index];
+                if (!empty($attendee_name) && !empty($attendee_email)) {
+                    $attendee = new \Google_Service_Calendar_EventAttendee();
+                    $attendee->setEmail($attendee_email);
+                    $attendee->setDisplayName($attendee_name);
+                    $attendees[] = $attendee;
+                }
+            }
+
+            $event->attendees = $attendees;
+        }
+
+        $created_event = $cal->events->insert($calendar_id, $event);
+
+        $evt->title = $title;
+        $evt->calendar_id = $calendar_id;
+        $evt->event_id = $created_event->id;
+        $evt->datetime_start = $start_datetime->toDateTimeString();
+        $evt->datetime_end = $end_datetime->toDateTimeString();
+        $evt->save();
+
+        return redirect('/event/create')
+                    ->with('message', [
+                        'type' => 'success',
+                        'text' => 'Event was created!'
+                    ]);
+   }
+
+
+   public function syncCalendar(Calendar $calendar)
+   {
+        $this->client->setAccessToken(Auth::user()->gcalendar_credentials);
+        $user_id = Auth::id();
+        $calendars = $calendar->where('user_id', '=', $user_id)
+            ->get();
+
+        $page_data = [
+            'calendars' => $calendars
+        ];
+        return view('calendar.sync_calendar', $page_data);
+   }
+
+
+   public function doSyncCalendar(Request $request)
+   {
+        $this->client->setAccessToken(Auth::user()->gcalendar_credentials);
+        $this->validate($request, [
+            'calendar_id' => 'required'
+        ]);
+
+        $user_id = Auth::id();
+        $calendar_id = $request->input('calendar_id');    
+
+        $calendar_ids = Calendar::where('user_id', $user_id)
+            ->pluck('calendar_id')
+            ->toArray();   
+        
+        $base_timezone = env('APP_TIMEZONE');
+
+        $calendars = Calendar::whereIn('calendar_id', $calendar_ids)->get();
+
+        foreach($calendars as $calendar) {
+            
+            $sync_token = $calendar->sync_token;
+
+            $gCalendarId = $calendar->calendar_id;
+
+            $gServiceCal = new \Google_Service_Calendar($this->client);
+            $gCalendar = $gServiceCal->calendars->get($gCalendarId);
+            $calendar_timezone = $gCalendar->getTimeZone();
+
+            $termine = ToDoModel::where('calendar_id', $calendar_id)
+                ->pluck('event_id')
+                ->toArray();
+            
+            if (!empty($sync_token)) {
+                $params = array(
+                    'syncToken' => $sync_token
+                );
+            } else {
+                $params = array(
+                    'showDeleted' => true,
+                    'timeMin' => Carbon::now()
+                        ->setTimezone($calendar_timezone)
+                        ->toAtomString()
+                );
+            }
+
+            $googlecalendar_events = $gServiceCal->events->listEvents($gCalendarId, $params);
+            
+
+            while (true) {
+
+                foreach ($googlecalendar_events->getItems() as $g_event) {
+
+                    $g_event_id = $g_event->id;
+                    $g_event_title = $g_event->getSummary();
+                    $g_status = $g_event->status;
+
+                    if ($g_status != 'cancelled') {
+
+                        if (!$g_event->getStart()->getDateTime) {
+                            $g_datetime_start = Carbon::parse($g_event->getStart()->getDate())
+                                ->tz($calendar_timezone)
+                                ->setTimezone($base_timezone)
+                                ->format('Y-m-d H:i:s');
+                        } else {
+                            $g_datetime_start = Carbon::parse($g_event->getStart()->getDateTime())
+                                ->tz($calendar_timezone)
+                                ->setTimezone($base_timezone)
+                                ->format('Y-m-d H:i:s');
+                        }
+
+                        if (!$g_event->getEnd()->getDateTime) {
+                            $g_datetime_end = Carbon::parse($g_event->getEnd()->getDate())
+                                ->tz($calendar_timezone)
+                                ->setTimezone($base_timezone)
+                                ->format('Y-m-d H:i:s');
+                        } else {
+                            $g_datetime_end = Carbon::parse($g_event->getEnd()->getDateTime())
+                                ->tz($calendar_timezone)
+                                ->setTimezone($base_timezone)
+                                ->format('Y-m-d H:i:s');
+                        }
+
+                        //check if event id is already in the events table
+                        if (in_array($g_event_id, $termine)) {
+                            //update event
+
+                            $event = ToDoModel::where('event_id', $g_event_id)->first();
+                            $event->title = $g_event_title;
+                            $event->calendar_id = $gCalendarId;
+                            $event->event_id = $g_event_id;
+                            $event->datetime_start = $g_datetime_start;
+                            $event->datetime_end = $g_datetime_end;
+                            $event->save();
+                        } else {
+                            //add event
+                            $event = new Event;
+                            $event->title = $g_event_title;
+                            $event->calendar_id = $gCalendarId;
+                            $event->event_id = $g_event_id;
+                            $event->datetime_start = $g_datetime_start;
+                            $event->datetime_end = $g_datetime_end;
+                            $event->save();
+                        }
+
+                    } else {
+                        //delete event
+                        if (in_array($g_event_id, $termine)) {
+                            ToDoModel::where('event_id', $g_event_id)->first()->delete();
+                        }
+                    }
+
+                }
+
+                $page_token = $googlecalendar_events->getNextPageToken();
+
+                if ($page_token) {
+                    $params['pageToken'] = $page_token;
+                    $googlecalendar_events = $gServiceCal->events->listEvents('primary', $params);
+
+                } else {
+                    $next_synctoken = str_replace('=ok', '', $googlecalendar_events->getNextSyncToken());
+                    //update next sync token
+                    $calendar = Calendar::where('calendar_id', $calendar_id)->first();
+                    $calendar->sync_token = $next_synctoken;
+                    $calendar->save();
+
+                    break;
+                }
+
+            }
+        }
+        $message = [
+                    'type' => 'success',
+                    'text' => 'Calendar was synced.'
+                ];
+        return response()->json($message);
+        
+        /**
+        return redirect('/calendar/sync')
+            ->with('message',
+                [
+                    'type' => 'success',
+                    'text' => 'Calendar was synced.'
+                ]);
+        **/
+
+   }
+
+
+   public function listEvents()
+   {
+        $this->client->setAccessToken(Auth::user()->gcalendar_credentials);
+        $user_id = Auth::id();
+        $calendar_ids = Calendar::where('user_id', $user_id)
+            ->pluck('calendar_id')
+            ->toArray();
+
+        $termine = ToDoModel::whereIn('calendar_id', $calendar_ids)
+            ->get();
+
+
+        $data =[];
+            foreach ($termine as $event) {
+                $subArr=[
+                    'id'=>$event->event_id,
+                    'title'=>$event->title,
+                    'start'=>$event->datetime_start,
+                    'end'=>$event->datetime_end,
+                ];
+                array_push($data,$subArr);
+            }
+
+        $page_data = [
+            'events' => $termine
+        ];
+
+        return $data;
+   }
 }
