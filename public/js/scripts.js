@@ -416,6 +416,23 @@ jQuery(function($) {
         return default_val;
     }
 
+/*--------------------------------
+         Login Page
+     --------------------------------*/
+    ULTRA_SETTINGS.loginPage = function() {
+
+        var height = window.innerHeight;
+        var formheight = $("#login").height();
+        var newheight = (height - formheight) / 2;
+        //console.log(height+" - "+ formheight + " / "+ newheight);
+        $('#login').css('margin-top', +newheight + 'px');
+
+        if ($('#login #user_login').length) {
+            var d = document.getElementById('user_login');
+            d.focus();
+        }
+
+    };
 
 
     /******************************
@@ -434,6 +451,15 @@ jQuery(function($) {
         ULTRA_SETTINGS.sectionBoxActions();
         ULTRA_SETTINGS.viewportElement();
         ULTRA_SETTINGS.onLoadTopBar();
+   });
+
+    $(window).resize(function() {
+        ULTRA_SETTINGS.windowBasedLayout();
+        ULTRA_SETTINGS.loginPage();
+    });
+
+    $(window).load(function() {
+        ULTRA_SETTINGS.loginPage();
     });
 
 });
