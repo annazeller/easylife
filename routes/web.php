@@ -25,11 +25,22 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('calendar', function() {
 		return view('calendar.index');
 	});
+    Route::get('/dashboard', 'gCalendarController@dashboard');
+
+    Route::get('/calendar/create', 'gCalendarController@createCalendar');
+    Route::post('/calendar/create', 'gCalendarController@doCreateCalendar');
+
+    Route::get('/event/create', 'gCalendarController@createEvent');
+    Route::post('/event/create', 'gCalendarController@doCreateEvent');
+
+    Route::get('/calendar/sync', 'gCalendarController@syncCalendar');
+    Route::post('/calendar/sync', 'gCalendarController@doSyncCalendar');
+
+    Route::get('/events', 'gCalendarController@listEvents');
+
 });
 
 Route::get('/home', 'ToDoController@index');
-
-Route::post('/deleteAjax', 'ToDoController@ajaxDelete');
-
 Route::resource('todos','ToDoController');
 
+Route::post('/deleteAjax', 'ToDoController@ajaxDelete');
