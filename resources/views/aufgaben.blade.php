@@ -198,7 +198,6 @@
                     var newtodo = "<div id="+json.id+"><div class='titel'><div class='buttons'><button value="+json.id+"class='btn-dell'>x</button><button value="+json.id+"class='edit' type='button' data-toggle='modal' data-target='#edit'>Edit</button></div></div><div>Titel:<div id="+json.id+'title'+">"+json.title+"</div></div><div>Beschreibung:<div id="+json.id+'description'+">"+json.description+"</div></div><div>Priorität:<div id="+json.id+'priority'+">"+json.priority+"</div></div> <div>Aufwand:<div id="+json.id+'duration'+">"+json.duration+"</div></div><div>Ort:<div id="+json.id+'location'+">"+json.location+"</div></div></div>";
 
                     $( "#todos" ).append( newtodo );
-
                 }
             });
         });
@@ -240,10 +239,9 @@
                     var replaceduration = idToEdit+'duration';
                     var replacepriority = idToEdit+'priority';
 
-
                     document.getElementById(replacetitle).innerHTML = json.title;
                     document.getElementById(replacedescription).innerHTML = json.description;
-                    document.getElementById(replacelocation).innerHTML = json.title;
+                    document.getElementById(replacelocation).innerHTML = json.location;
                     document.getElementById(replaceduration).innerHTML = json.duration;
                     document.getElementById(replacepriority).innerHTML = json.priority;
                 }
