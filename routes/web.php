@@ -46,6 +46,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('profile', 'UserController@profile');
     Route::post('profile', 'UserController@update_avatar');
 
+    Route::get('statistics', 'HomeController@googleLineChart');
+
 });
 
 Route::get('/home', 'ToDoController@index')->name('index');

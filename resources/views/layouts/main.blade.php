@@ -54,21 +54,15 @@
                             </a>
                             <ul class="dropdown-menu profile animated fadeIn">
                                 <li>
-                                    <a href="{{ url('/profile') }}">
+                                    <a href="/users/{{ Auth::user()->id }}">
                                         <i class="fa fa-wrench"></i>
                                         Einstellungen
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/users/{{ Auth::user()->id }}">
+                                    <a href="{{ url('/profile') }}">
                                         <i class="fa fa-user"></i>
                                         Profil
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-info"></i>
-                                        Hilfe
                                     </a>
                                 </li>
                                 <li class="last">
@@ -130,17 +124,17 @@
                             </a>
                         </li>
                         <li class="">
-                            <a href="/statistics">
+                            <a href="{{ url('/statistics') }}">
                                 <i class="fa fa-bar-chart"></i>
                                 <span class="title">Statistik</span>
                             </a>
                         </li>
-                        <li class="">
+<!--                         <li class="">
                             <a href="javascript:;">
                                 <i class="fa fa-cog"></i>
                                 <span class="title">Einstellungen</span>
                             </a>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
             </div>
