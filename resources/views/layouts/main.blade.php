@@ -48,7 +48,7 @@
                     <ul class="info-menu right-links list-inline list-unstyled">
                         <li class="profile">
                             <a href="#" data-toggle="dropdown" class="toggle">
-                                <img src="data/profile/profile.png" alt="user-image" class="img-circle img-inline">
+                                <img src="/data/profile/profile.png" alt="user-image" class="img-circle img-inline">
                                 <span>{{ Auth::user()->name }} <i class="fa fa-angle-down"></i></span>
                             </a>
                             <ul class="dropdown-menu profile animated fadeIn">
@@ -59,7 +59,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">
+                                    <a href="users/{{ Auth::user()->id }}">
                                         <i class="fa fa-user"></i>
                                         Profil
                                     </a>
@@ -92,7 +92,7 @@
                     <div class="profile-info row">
                         <div class="profile-image col-md-4 col-sm-4 col-xs-4">
                             <a href="#">
-                                <img src="data/profile/profile.png" class="img-responsive img-circle">
+                                <img src="/data/profile/profile.png" class="img-responsive img-circle">
                             </a>
                         </div>
                         <div class="profile-details col-md-8 col-sm-8 col-xs-8">

@@ -12,7 +12,7 @@ use Google_Service_Calendar_EventDateTime;
 use Auth;
 use App\User;
 use App\Calendar;
-use App\Event;
+use App\ToDoModel;
 
 class gCalendarController extends Controller
 {
@@ -86,13 +86,27 @@ class gCalendarController extends Controller
     }
 
     public function dashboard(Request $request)
-   {
-        $this->client->setAccessToken(Auth::user()->gcalendar_credentials);
-        return view('dashboard');
+   { 
+        $user = Auth::user();
+
+        if ($user->gcalendar_integration_active) {
+            
+            $this->client->setAccessToken($user->gcalendar_credentials);
+            if ($this->client->isAccessTokenExpired()) {
+                $accessToken = $this->client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
+                $user->update([
+                    'gcalendar_credentials' => json_encode($accessToken),
+                ]);
+            }
+            return view('dashboard');
+        } else {
+            return redirect()->route('oauthCallback');
+        }
    }
     
     public function oauth(Request $request)
     {
+
         $input = $request->all();
 
         $user = Auth::user();
@@ -113,7 +127,7 @@ class gCalendarController extends Controller
             ]);
         
 
-            return redirect()->route('cal.index');
+            return redirect()->route('/dashboard');
         }
 
     }

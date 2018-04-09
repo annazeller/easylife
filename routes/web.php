@@ -38,6 +38,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/events', 'gCalendarController@listEvents');
 
+    Route::get('users/{user}',  ['as' => 'users.edit', 'uses' => 'UserController@edit']);
+    Route::patch('users/{user}/update',  ['as' => 'users.updateProfile', 'uses' => 'UserController@updateProfile']);
+
 });
 
 Route::get('/home', 'ToDoController@index');
