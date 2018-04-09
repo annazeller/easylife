@@ -20,9 +20,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('cal', 'gCalendarController');
 	Route::get('oauth', ['as' => 'oauthCallback', 'uses' => 'gCalendarController@oauth']);
-	Route::get('calendar', function() {
-		return view('calendar.index');
-	});
+	Route::get('calendar', 'gCalendarController@index');
     Route::get('/dashboard', 'gCalendarController@dashboard')->name('dashboard');
 
     Route::get('/calendar/create', 'gCalendarController@createCalendar');
@@ -34,7 +32,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/calendar/sync', 'gCalendarController@syncCalendar');
     Route::post('/calendar/sync', 'gCalendarController@doSyncCalendar');
 
-    Route::get('/events', 'gCalendarController@listEvents');
+    Route::get('/events', 'gCalendarController@listEvents')->name('events');
 
     Route::get('users/{user}',  ['as' => 'users.edit', 'uses' => 'UserController@edit']);
     Route::patch('users/{user}/update',  ['as' => 'users.updateProfile', 'uses' => 'UserController@updateProfile']);
