@@ -153,7 +153,8 @@
 
         var idToEdit;
 
-        $(".btn-dell").click(function () {
+        $(document).on('click', '.btn-dell', function() {
+            console.log("btn dell called");
             var idElementToDelete = $(this).val();
             console.log(idElementToDelete);
             var divToRemove = $('#'+idElementToDelete);
