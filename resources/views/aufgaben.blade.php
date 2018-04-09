@@ -23,25 +23,15 @@
                         </button>
                     </div>
             </div>
-            <div>Titel:<div id="{{$todo->id}}title">
-                {{ $todo->title }}
-                </div>
+            <div>Titel:<div id="{{$todo->id}}title">{{ $todo->title }}</div>
             </div>
-            <div>Beschreibung:<div id="{{$todo->id}}description">
-                {{ $todo->description }}
-                </div>
+            <div>Beschreibung:<div id="{{$todo->id}}description">{{ $todo->description }}</div>
             </div>
-            <div>Priorität:<div id="{{$todo->id}}priority">
-                {{ $todo->priority }}
-                </div>
+            <div>Priorität:<div id="{{$todo->id}}priority">{{ $todo->priority }}</div>
             </div>
-            <div>Aufwand:<div id="{{$todo->id}}duration">
-                {{ $todo->duration }}
-                </div>
+            <div>Aufwand:<div id="{{$todo->id}}duration">{{ $todo->duration }}</div>
             </div>
-            <div>Ort:<div id="{{$todo->id}}location">
-                {{ $todo->location }}
-                </div>
+            <div>Ort:<div id="{{$todo->id}}location">{{ $todo->location }}</div>
             </div>
         </div>
     @endforeach
