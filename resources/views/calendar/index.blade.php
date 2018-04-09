@@ -28,9 +28,14 @@
 				      center: 'title',
 				      right: 'week,month,listYear'
 				    },
-		            events:'events'
+		            events:'events',
+                    dayClick: function() {
+                        alert('Neuen Termin erstellen');
+                    }
+
 		        });
 		    });
+
 		</script>
 		<script type="text/javascript">
 		    $(document).ready(function(){
