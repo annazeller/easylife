@@ -31,8 +31,9 @@
 </head>
     <body class=" ">
         <div class='page-topbar '>
+            <a href="/home">
             <div class='logo-area'>
-            </div>
+            </div></a>
             <div class='quick-area'>
                 <div class='pull-left'>
                     <ul class="info-menu left-links list-inline list-unstyled">
@@ -48,18 +49,18 @@
                     <ul class="info-menu right-links list-inline list-unstyled">
                         <li class="profile">
                             <a href="#" data-toggle="dropdown" class="toggle">
-                                <img src="/data/profile/profile.png" alt="user-image" class="img-circle img-inline">
+                                <img src="/data/profile/{{ Auth::user()->avatar }}" alt="user-image" class="img-circle img-inline">
                                 <span>{{ Auth::user()->name }} <i class="fa fa-angle-down"></i></span>
                             </a>
                             <ul class="dropdown-menu profile animated fadeIn">
                                 <li>
-                                    <a href="#">
+                                    <a href="{{ url('/profile') }}">
                                         <i class="fa fa-wrench"></i>
                                         Einstellungen
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="users/{{ Auth::user()->id }}">
+                                    <a href="/users/{{ Auth::user()->id }}">
                                         <i class="fa fa-user"></i>
                                         Profil
                                     </a>
@@ -92,7 +93,7 @@
                     <div class="profile-info row">
                         <div class="profile-image col-md-4 col-sm-4 col-xs-4">
                             <a href="#">
-                                <img src="/data/profile/profile.png" class="img-responsive img-circle">
+                                <img src="/data/profile/{{ Auth::user()->avatar }}" class="img-responsive img-circle">
                             </a>
                         </div>
                         <div class="profile-details col-md-8 col-sm-8 col-xs-8">
@@ -105,7 +106,7 @@
                     </div>
                     <ul class='wraplist'>
                         <li class="">
-                            <a href="index.html">
+                            <a href="/dashboard">
                                 <i class="fa fa-tachometer"></i>
                                 <span class="title">Dashboard</span>
                             </a>
@@ -129,15 +130,9 @@
                             </a>
                         </li>
                         <li class="">
-                            <a href="javascript:;">
+                            <a href="/statistics">
                                 <i class="fa fa-bar-chart"></i>
                                 <span class="title">Statistik</span>
-                            </a>
-                        </li>
-                        <li class="">
-                            <a href="javascript:;">
-                                <i class="fa fa-envelope"></i>
-                                <span class="title">Nachrichten</span>
                             </a>
                         </li>
                         <li class="">

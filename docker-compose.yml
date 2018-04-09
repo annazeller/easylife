@@ -31,8 +31,8 @@ services:
       - "MYSQL_USER=homestead"
       - "MYSQL_PASSWORD=homestead"
       - "COMPOSE_CONVERT_WINDOWS_PATHS=1"
-#    ports:
-#        - "3306:3306"
+    ports:
+        - "33061:3306"
 
 #  pgsql:
 #    image: postgres:9.6-alpine

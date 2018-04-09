@@ -41,6 +41,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('users/{user}',  ['as' => 'users.edit', 'uses' => 'UserController@edit']);
     Route::patch('users/{user}/update',  ['as' => 'users.updateProfile', 'uses' => 'UserController@updateProfile']);
 
+    Route::get('/statistics', function() {
+        return view('stats');
+    });
+
+    Route::get('profile', 'UserController@profile');
+    Route::post('profile', 'UserController@update_avatar');
+
 });
 
 Route::get('/home', 'ToDoController@index');
