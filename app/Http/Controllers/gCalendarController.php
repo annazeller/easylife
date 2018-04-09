@@ -125,9 +125,10 @@ class gCalendarController extends Controller
                 'gcalendar_credentials' => json_encode($accessToken),
                 'gcalendar_integration_active' => true,
             ]);
-        
 
-            return redirect()->route('/dashboard');
+            //$this->savePrimaryCalendar();
+
+            return redirect()->route('dashboard');
         }
 
     }
@@ -349,6 +350,25 @@ class gCalendarController extends Controller
             ->with('message', [
                 'type' => 'success', 'text' => 'Calendar was created!'
             ]);
+   }
+
+   public function savePrimaryCalendar()
+   {
+        $this->client->setAccessToken(Auth::user()->gcalendar_credentials);
+        $title = "Primärkalender";
+
+        $service = new Google_Service_Calendar($this->client);
+        $primaryCalendar = $service->calendarList->get('primary');
+
+        $calendar_id = $primaryCalendar->getId();
+
+        $calendar = new Calendar;
+        $calendar->user_id = Auth::id();
+        $calendar->title = $title;
+        $calendar->calendar_id = $calendar_id;
+        $calendar->sync_token = '';
+        $calendar->save();
+
    }
 
 

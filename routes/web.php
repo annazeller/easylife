@@ -25,7 +25,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('calendar', function() {
 		return view('calendar.index');
 	});
-    Route::get('/dashboard', 'gCalendarController@dashboard');
+    Route::get('/dashboard', 'gCalendarController@dashboard')->name('dashboard');
 
     Route::get('/calendar/create', 'gCalendarController@createCalendar');
     Route::post('/calendar/create', 'gCalendarController@doCreateCalendar');
