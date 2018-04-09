@@ -18,7 +18,7 @@
 	<label>Confirm Password <br />
     <input type="password" name="password_confirmation" />
 	</p>
-    <button type="submit">Change Password</button>
+    <button class="btn btn-orange" type="submit">Change Password</button>
 </form>
 @include('partials.alert')
 @endsection
