@@ -16,7 +16,7 @@ class CreateCalendarsTable extends Migration
             $table->string('title');
             $table->string('calendar_id');
             $table->string('sync_token');
-            $table->string('color');
+            $table->string('color')->nullable();
         });
     }
     /**

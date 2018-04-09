@@ -17,18 +17,18 @@ class ToDoController extends Controller
 {
     public function index(){
 
-        if(Auth::check()) {
+        //if(Auth::check()) {
             $user = Auth::user();
             $uid = $user->id;
 
             $todos = ToDoModel::where('userid', $uid)->get();
 
             return View::make('aufgaben')->with('todos', $todos);
-        }
-        else
-        {
-            return Redirect::to('/');
-        }
+        //}
+        //else
+        //{
+        //    return Redirect::to('/');
+        //}
 
     }
 
@@ -115,6 +115,17 @@ class ToDoController extends Controller
         ToDoModel::find ( $elementid )->delete();
 
         return response()->json();
+    }
+
+    public function welcome()
+    {
+        if(Auth::check()) {
+            return redirect()->route('index');
+        }
+        else
+        {
+            return View::make('welcome');
+        }
     }
 
     public function ajaxDelete(Request $r)
