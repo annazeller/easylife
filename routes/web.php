@@ -11,11 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
+
+Route::get('/', 'ToDoController@welcome');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -43,7 +41,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 });
 
-Route::get('/home', 'ToDoController@index');
+Route::get('/home', 'ToDoController@index')->name('index');
 Route::resource('todos','ToDoController');
 
 Route::post('/deleteAjax', 'ToDoController@ajaxDelete');
