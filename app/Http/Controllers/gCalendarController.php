@@ -126,7 +126,7 @@ class gCalendarController extends Controller
                 'gcalendar_integration_active' => true,
             ]);
 
-            //$this->savePrimaryCalendar();
+            $this->savePrimaryCalendar();
 
             return redirect()->route('dashboard');
         }
@@ -385,20 +385,25 @@ class gCalendarController extends Controller
    }
 
 
-   public function doCreateEvent(Event $evt, Request $request)
+   public function doCreateEvent(ToDoModel $evt, Request $request)
    {
-        $this->client->setAccessToken(Auth::user()->gcalendar_credentials);
+        $user_id = Auth::id();
+        $user = Auth::user();
+        $this->client->setAccessToken($user->gcalendar_credentials);
         $this->validate($request, [
             'title' => 'required',
             'calendar_id' => 'required',
-            'datetime_start' => 'required|date',
-            'datetime_end' => 'required|date'
+            'datetime_start' => 'required|date|before:datetime_end',
+            'datetime_end' => 'required|date|after:datetime_start'
         ]);
 
         $title = $request->input('title');
         $calendar_id = $request->input('calendar_id');
         $start = $request->input('datetime_start');
         $end = $request->input('datetime_end');
+        $description = $request->input('description');
+        $location = $request->input('location');
+        $priority = $request->input('priority');
 
         $start_datetime = Carbon::createFromFormat('d.m.Y H:i', $start);
         $end_datetime = Carbon::createFromFormat('d.m.Y H:i', $end);
@@ -413,6 +418,7 @@ class gCalendarController extends Controller
         $end = new \Google_Service_Calendar_EventDateTime();
         $end->setDateTime($end_datetime->toAtomString());
         $event->setEnd($end);
+        $event->setSourceTitle = "easyLife";
 
         //attendee
         if ($request->has('attendee_name')) {
@@ -435,7 +441,12 @@ class gCalendarController extends Controller
 
         $created_event = $cal->events->insert($calendar_id, $event);
 
+        $evt->userId = $user_id;
         $evt->title = $title;
+        $evt->description = $description;
+        $evt->location = $location;
+        $evt->priority = $priority;
+        $evt->duration = $end_datetime->diffInMinutes($start_datetime);
         $evt->calendar_id = $calendar_id;
         $evt->event_id = $created_event->id;
         $evt->datetime_start = $start_datetime->toDateTimeString();
@@ -559,7 +570,8 @@ class gCalendarController extends Controller
                             $event->save();
                         } else {
                             //add event
-                            $event = new Event;
+                            $event = new ToDoModel;
+                            $event->userId = $user_id;
                             $event->title = $g_event_title;
                             $event->calendar_id = $gCalendarId;
                             $event->event_id = $g_event_id;
