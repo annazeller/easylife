@@ -50,7 +50,7 @@
                                 @endif
                     </p>
                     <p>
-                        <label for="email">{{ __('E-Mail Address') }}<br />
+                        <label for="email">{{ __('E-Mail Addresse') }}<br />
                             <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
 
                                 @if ($errors->has('email'))
@@ -60,7 +60,7 @@
                                 @endif
                     </p>
                     <p>
-                        <label for="password">{{ __('Password') }}<br />
+                        <label for="password">{{ __('Passwort') }}<br />
                             <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
 
                                 @if ($errors->has('password'))
@@ -70,7 +70,7 @@
                                 @endif
                     </p>
                     <p>
-                        <label for="password-confirm">{{ __('Confirm Password') }}<br />
+                        <label for="password-confirm">{{ __('Passwort bestätigen') }}<br />
                             <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                     </p>
 
@@ -78,7 +78,7 @@
 
                     <p class="submit">
                         <button type="submit" class="btn btn-orange btn-block">
-                                    {{ __('Register') }}
+                                    {{ __('Registrieren') }}
                                 </button>
                     </p>
                 </form>

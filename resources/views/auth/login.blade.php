@@ -32,7 +32,7 @@
                 <form name="loginform" id="loginform" action="{{ route('login') }}" method="post">
                     @csrf
                     <p>
-                        <label for="email">{{ __('E-Mail Address') }}<br />
+                        <label for="email">{{ __('E-Mail Addresse') }}<br />
                             <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
                             @if ($errors->has('email'))
                             <span class="invalid-feedback">
@@ -41,7 +41,7 @@
                             @endif
                         </p>
                         <p>
-                            <label for="password">{{ __('Password') }}<br />
+                            <label for="password">{{ __('Passwort') }}<br />
                                 <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
                                 @if ($errors->has('password'))
                                 <span class="invalid-feedback">
