@@ -22,7 +22,11 @@
                         <button value="{{$todo->id}}" class="edit" type="button" data-toggle="modal" data-target="#edit">
                             Edit
                         </button>
-                        <input value="{{$todo->id}}" class="inline checkbox" type="checkbox">
+                        @if ($todo->completed == 1)
+                        <input value="{{$todo->id}}" class="inline checkbox" type="checkbox" checked>
+                        @else
+                            <input value="{{$todo->id}}" class="inline checkbox" type="checkbox">
+                            @endif
                     </div>
             </div>
             <div>Titel: <div class="inline" id="{{$todo->id}}title">{{ $todo->title }}</div>
@@ -213,6 +217,9 @@
             }
         });
         var idToEdit;
+
+
+
         $(document).on('click', '.btn-dell', function() {
             var idElementToDelete = $(this).val();
             var divToRemove = $('#'+idElementToDelete);
