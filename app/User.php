@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'gcalendar_credentials', 'gcalendar_integration_active'
+        'name', 'email', 'password', 'gcalendar_credentials', 'gcalendar_integration_active', 'sleephours', 'morningTime', 'eveningTime', 'workingBegin', 'workingHours', 'breakfast', 'dinner', 'drive', 'dinnertime',
     ];
 
     /**
