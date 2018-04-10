@@ -218,8 +218,6 @@
         });
         var idToEdit;
 
-
-
         $(document).on('click', '.btn-dell', function() {
             var idElementToDelete = $(this).val();
             var divToRemove = $('#'+idElementToDelete);
@@ -312,7 +310,8 @@
                     'title': $('#title_edit').val(),
                     'description': $('#description_edit').val(),
                     'priority': $('#priority_edit').val(),
-                    'duration': $('#duration_edit').val(),
+                    'duration_min': $('#duration_edit_min').val(),
+                    'duration_h': $('#duration_edit_h').val(),
                     'location': $('#location_edit').val(),
                 },
                 success: function (data) {
@@ -322,6 +321,7 @@
                     var replacelocation = idToEdit+'location';
                     var replaceduration = idToEdit+'duration';
                     var replacepriority = idToEdit+'priority';
+
                     document.getElementById(replacetitle).innerHTML = json.title;
                     document.getElementById(replacedescription).innerHTML = json.description;
                     document.getElementById(replacelocation).innerHTML = json.location;
