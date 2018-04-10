@@ -15,7 +15,7 @@ Auth::routes();
 
 Route::get('/', 'ToDoController@welcome');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('index');
 
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('cal', 'gCalendarController');
@@ -44,15 +44,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('profile', 'UserController@profile');
     Route::post('profile', 'UserController@update_avatar');
 
-    Route::get('statistics', 'HomeController@googleLineChart');
+    Route::get('statistics', 'gChartsController@googleLineChart');
 
 });
 
 Route::get('/home', 'ToDoController@index')->name('index');
 Route::resource('todos','ToDoController');
-
 Route::post('/deleteAjax', 'ToDoController@ajaxDelete');
-
 Route::get('/registerquestions', function (){
     return view ('registerquestions');
 });
+
+Route::get('plan', 'gCalendarController@plan');
