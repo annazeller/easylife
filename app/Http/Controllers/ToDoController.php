@@ -106,12 +106,7 @@ class ToDoController extends Controller
                 $todo->description = $r->description;
                 $todo->location = $r->location;
                 $todo->priority = $r->priority;
-                $stunden = $r->duration_h;
-                $minuten = $r->duration_min;
-
-                $dauer = ($stunden * 60 ) + $minuten;
-
-                $todo->duration = $dauer;
+                $todo->duration =  $r->duration;
                 $todo->save();
 
                 return response()->json($todo);
