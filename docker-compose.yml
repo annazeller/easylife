@@ -48,8 +48,8 @@ services:
   redis:
     image: redis:4.0-alpine
     command: redis-server --appendonly yes
-#    ports:
-#        - "6379:6379"
+    ports:
+        - "6379:6379"
 
 #  elastic:
 #    image: elasticsearch:5.5-alpine

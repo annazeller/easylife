@@ -4,6 +4,10 @@
         .hidden{
             display: none;
         }
+
+        .inline{
+            display: inline-block;
+        }
     </style>
     <!-- Neues ToDo erstellen -->
     <button class="btn btn-default" id="buttonNewToDO" type="button" data-toggle="modal" data-target="#create">Neue Aufgabe</button>
@@ -18,17 +22,18 @@
                         <button value="{{$todo->id}}" class="edit" type="button" data-toggle="modal" data-target="#edit">
                             Edit
                         </button>
+                        <input value="{{$todo->id}}" class="inline checkbox" type="checkbox">
                     </div>
             </div>
-            <div>Titel:<div id="{{$todo->id}}title">{{ $todo->title }}</div>
+            <div>Titel: <div class="inline" id="{{$todo->id}}title">{{ $todo->title }}</div>
             </div>
-            <div>Beschreibung:<div id="{{$todo->id}}description">{{ $todo->description }}</div>
+            <div>Beschreibung: <div class="inline" id="{{$todo->id}}description">{{ $todo->description }}</div>
             </div>
-            <div>Priorität:<div id="{{$todo->id}}priority">{{ $todo->priority }}</div>
+            <div>Priorität: <div class="inline" id="{{$todo->id}}priority">{{ $todo->priority }}</div>
             </div>
-            <div>Aufwand:<div id="{{$todo->id}}duration">{{ $todo->duration }}</div>
+            <div>Aufwand: <div class="inline" id="{{$todo->id}}duration">{{ date('H:i', mktime(0, ( $todo->duration ))) }} </div> h
             </div>
-            <div>Ort:<div id="{{$todo->id}}location">{{ $todo->location }}</div>
+            <div>Ort: <div class="inline" id="{{$todo->id}}location">{{ $todo->location }}</div>
             </div>
         </div>
     @endforeach
@@ -72,7 +77,32 @@
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="duration">Aufwand:</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="duration_edit" autofocus>
+                                <select id="duration_edit_h">
+                                    <option>00</option>
+                                    <option>01</option>
+                                    <option>02</option>
+                                    <option>03</option>
+                                    <option>04</option>
+                                    <option>05</option>
+                                    <option>06</option>
+                                    <option>07</option>
+                                    <option>08</option>
+                                    <option>09</option>
+                                </select>h
+                                <select id="duration_edit_min">
+                                    <option>00</option>
+                                    <option>05</option>
+                                    <option>10</option>
+                                    <option>15</option>
+                                    <option>20</option>
+                                    <option>25</option>
+                                    <option>30</option>
+                                    <option>35</option>
+                                    <option>40</option>
+                                    <option>45</option>
+                                    <option>50</option>
+                                    <option>55</option>
+                                </select>min
                             </div>
                         </div>
                         <div class="form-group">
@@ -126,8 +156,37 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="duration">Aufwand:</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="duration_create" required autofocus >
+                            <div class="col-sm-10 ">
+                                <div class="inline h">
+                                <select id="duration_create_h">
+                                    <option >00</option>
+                                    <option >01</option>
+                                    <option >02</option>
+                                    <option >03</option>
+                                    <option >04</option>
+                                    <option >05</option>
+                                    <option >06</option>
+                                    <option >07</option>
+                                    <option >08</option>
+                                    <option >09</option>
+                                </select>h
+                                </div>
+                                <div class="inline min">
+                                <select id="duration_create_min">
+                                    <option >00</option>
+                                    <option >05</option>
+                                    <option >10</option>
+                                    <option >15</option>
+                                    <option >20</option>
+                                    <option >25</option>
+                                    <option selected="selected">30</option>
+                                    <option >35</option>
+                                    <option >40</option>
+                                    <option >50</option>
+                                    <option >45</option>
+                                    <option >55</option>
+                                </select>min
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -169,6 +228,24 @@
                 }
             });
         });
+
+        $(document).on('click', '.checkbox', function() {
+            var idElementCheck = $(this).val();
+
+            console.log("I am in");
+
+            $.ajax({
+                type: 'POST',
+                url: "done",
+                dataType: 'text',
+                data: {
+                    'id': idElementCheck
+                },
+                success: function (data) {
+                }
+            });
+        });
+
         $(".createsubmit").click(function () {
             $.ajax({
                 type: 'POST',
@@ -178,32 +255,48 @@
                     'title': $('#title_create').val(),
                     'description': $('#description_create').val(),
                     'priority': $('#priority_create').val(),
-                    'duration': $('#duration_create').val(),
+                    'duration_h': $('#duration_create_h').val(),
+                    'duration_min': $('#duration_create_min').val(),
                     'location': $('#location_create').val(),
                 },
                 success: function (data) {
                     var json = JSON.parse(data);
-                    var newtodo = "<div id="+json.id+"><div class='titel'><div class='buttons'><button value="+json.id+" class='btn-dell'>x</button><button value="+json.id+" class='edit' type='button' data-toggle='modal' data-target='#edit'>Edit</button></div></div><div>Titel:<div id="+json.id+'title'+">"+json.title+"</div></div><div>Beschreibung:<div id="+json.id+'description'+">"+json.description+"</div></div><div>Priorität:<div id="+json.id+'priority'+">"+json.priority+"</div></div> <div>Aufwand:<div id="+json.id+'duration'+">"+json.duration+"</div></div><div>Ort:<div id="+json.id+'location'+">"+json.location+"</div></div></div>";
+                    var newtodo = "<div id="+json.id+"><div class='titel'><div class='buttons'><button value="+json.id+" class='btn-dell'>x</button><button value="+json.id+" class='edit' type='button' data-toggle='modal' data-target='#edit'>Edit</button></div></div><div>Titel:<div class='inline' id="+json.id+'title'+">"+json.title+"</div></div><div>Beschreibung:<div class='inline' id="+json.id+'description'+">"+json.description+"</div></div><div>Priorität:<div class='inline' id="+json.id+'priority'+">"+json.priority+"</div></div> <div>Aufwand:<div class='inline' id="+json.id+'duration'+">"+json.duration+"</div></div><div class='inline'>Ort:<div class='inline' id="+json.id+'location'+">"+json.location+"</div></div></div>";
                     $( "#todos" ).append( newtodo );
                     $('#title_create').val('');
                     $('#description_create').val('');
                     $('#priority_create').val('');
-                    $('#duration_create').val('');
+                    $('#duration_create_h').val(0);
+                    $('#duration_create_min').val(30);
                     $('#location_create').val('');
                 }
             });
         });
+
         $(document).on('click', '.edit', function() {
             var idElementToEdit = $(this).val();
             idToEdit = idElementToEdit;
+
             $('#title_edit').val(document.getElementById (idElementToEdit+'title').innerHTML);
             $('#description_edit').val(document.getElementById (idElementToEdit+'description').innerHTML);
             $('#location_edit').val(document.getElementById (idElementToEdit+'location').innerHTML);
-            $('#duration_edit').val(document.getElementById (idElementToEdit+'duration').innerHTML);
+
             $('#priority_edit').val(document.getElementById (idElementToEdit+'priority').innerHTML);
+
+            var durationsplit = (document.getElementById (idElementToEdit+'duration').innerHTML).split(":");
+            durationsplit[0];
+            durationsplit[1];
+
+            $('#duration_edit_h').val(durationsplit[0]);
+            $('#duration_edit_min').val(durationsplit[1]);
+
+            console.log(durationsplit[0]);
+            console.log(durationsplit[1]);
+
             $('#edit').modal('show');
         });
         $(".editsubmit").click(function () {
+
             $.ajax({
                 type: 'PUT',
                 url: "todos/"+idToEdit,

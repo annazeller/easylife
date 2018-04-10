@@ -17,18 +17,18 @@ class ToDoController extends Controller
 {
     public function index(){
 
-        //if(Auth::check()) {
+        if(Auth::check()) {
             $user = Auth::user();
             $uid = $user->id;
 
             $todos = ToDoModel::where('userid', $uid)->get();
 
             return View::make('aufgaben')->with('todos', $todos);
-        //}
-        //else
-        //{
-        //    return Redirect::to('/');
-        //}
+        }
+        else
+        {
+            return Redirect::to('/');
+        }
 
     }
 
@@ -44,7 +44,6 @@ class ToDoController extends Controller
             $rules = array(
                 'title' => 'required',
                 'priority' => 'required',
-                'duration' => 'required',
             );
 
             $validator = Validator::make(Input::all(), $rules);
@@ -61,7 +60,13 @@ class ToDoController extends Controller
                 $todo->description = $r->description;
                 $todo->location = $r->location;
                 $todo->priority = $r->priority;
-                $todo->duration = $r->duration;
+
+                $stunden = $r->duration_h;
+                $minuten = $r->duration_min;
+
+                $dauer = ($stunden * 60 ) + $minuten;
+
+                $todo->duration = $dauer;
 
                 $todo->userId = $user->id;
                 $todo->save();
@@ -132,6 +137,26 @@ class ToDoController extends Controller
     {
         $elementid = $r->id;
         ToDoModel::find ( $elementid )->delete();
+
+        return response()->json();
+    }
+
+    public function checkToDo(Request $r)
+    {
+        $elementid = $r->id;
+        $todo = ToDoModel::find($elementid);
+
+        $currentstate = $todo->completed;
+
+        if($currentstate == 0) {
+            $todo->completed = 1;
+        }
+        elseif ($currentstate == 1)
+        {
+            $todo->completed = 0;
+        }
+
+        $todo->save();
 
         return response()->json();
     }
