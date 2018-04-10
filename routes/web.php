@@ -52,3 +52,7 @@ Route::get('/home', 'ToDoController@index')->name('index');
 Route::resource('todos','ToDoController');
 
 Route::post('/deleteAjax', 'ToDoController@ajaxDelete');
+
+Route::get('/registerquestions', function (){
+    return view ('registerquestions');
+});

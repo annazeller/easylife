@@ -92,12 +92,11 @@ class ToDoController extends Controller
             $rules = array(
                 'title' => 'required',
                 'priority' => 'required',
-                'duration' => 'required'
             );
             $validator = Validator::make(Input::all(), $rules);
 
             if ($validator->fails()) {
-                return Redirect::to('/home/' . $id . '/edit')
+                return Redirect::to('/home')
                     ->withErrors($validator)
                     ->withInput(Input::except('password'));
             } else {
