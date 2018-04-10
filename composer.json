@@ -6,6 +6,7 @@
     "type": "project",
     "require": {
         "php": "^7.1.3",
+        "calcinai/php-imagick": "^0.1.2",
         "creitive/laravel5-breadcrumbs": "^2.1",
         "doctrine/dbal": "^2.7",
         "fideloper/proxy": "^4.0",

@@ -290,6 +290,7 @@ a:hover, a:focus {
     margin: 0;
     line-height: 60px;
     padding: 0 15px;
+    padding-right: 60px;
 }
 .page-topbar .quick-area .info-menu li {
     position: relative;

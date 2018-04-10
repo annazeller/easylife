@@ -6,11 +6,14 @@
 
 	@section('content')
 
-		<div class="container">
-			<h3>Kalender</h3>
-			<button id="sync" class="btn btn">Sync</button>
-			<div id="calendar"></div>
-		</div>
+	<div class="container">
+	    <h3>Kalender</h3>
+	    <button id="sync" class="btn btn">Sync</button>
+	    <div id="calendar" width="100%"></div>
+	</div>
+
+	@include('partials.event_erstellen')
+
 	@endsection
 
 	@push('scripts')
@@ -22,20 +25,39 @@
 		        	defaultView: 'agendaWeek',
 		        	firstDay: 1,
 		        	nowIndicator: true,
-		        	allDayDefault: true,
+		        	height: 'auto',
+		        	selectable: true,
 		        	header: {
 				      left: 'prev,next today',
 				      center: 'title',
-				      right: 'week,month,listYear'
+				      right: 'agendaWeek,month,listYear'
 				    },
 		            events:'events',
-                    dayClick: function() {
-                        alert('Neuen Termin erstellen');
-                    }
 
+		            dayClick: function(date) {
+
+		            	$('#datetime_start').val(date.format("DD.MM.YYYY HH:mm"));
+		            	$('#create').modal('show');
+		            },
+		            select: function(startDate, endDate) {
+		            	var beginn = startDate.format("DD.MM.YYYY HH:mm");
+		            	var ende = endDate.format("DD.MM.YYYY HH:mm");
+		            	$('#datetime_start').val(beginn);
+		            	$('#datetime_end').val(ende);
+		            	$('#create').modal('show');
+		            },
+		            views: {
+		                week: {
+		                    minTime: "00:00:00",
+		                    maxTime: "24:00:00"
+		                },
+		                day: {
+		                    minTime: "00:00:00",
+		                    maxTime: "24:00:00"
+		                }
+		            },
 		        });
 		    });
-
 		</script>
 		<script type="text/javascript">
 		    $(document).ready(function(){
@@ -46,7 +68,8 @@
 		        });
 
 				$("#sync").click(function () {
-					var calendar_id = "ejh7k3d3e26i2j7h268h2bsfh0@group.calendar.google.com";
+					var calendar_id = {!! $calendars !!};
+
 		            $.ajax({
 		                type: 'POST',
 		                url: "/calendar/sync",
@@ -54,16 +77,38 @@
 		                data: {
 		                    'calendar_id': calendar_id
 		                },
-		                success: function (data) {
-                      var json = JSON.parse(data);
-		                	console.log(json);
+		                success: function () {
 		                	$('#calendar').fullCalendar( 'refetchEvents' );
 		            	}
 	        		});
 				});
-			});
-			
-		</script>
+
+
+		        $(".createsubmit").click(function () {
+		            $.ajax({
+		                type: 'POST',
+		                url: "/event/create",
+		                dataType: 'text',
+		                data: {
+		                    'title': $('#title').val(),
+		                    'description': $('#description').val(),
+		                    'calendar_id': $('#calendar_id').val(),
+		                    'location': $('#location').val(),
+		                    'priority': $('#priority').val(),
+		                    'datetime_start': $('#datetime_start').val(),
+		                    'datetime_end': $('#datetime_end').val(),
+		                },
+
+		                success: function () {
+		                    $('#calendar').fullCalendar( 'refetchEvents' );
+
+		                }
+		            });
+		        });
+
+		    });
+
+</script>
 
 
 	@endpush

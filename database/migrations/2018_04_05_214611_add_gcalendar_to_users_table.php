@@ -14,7 +14,7 @@ class AddGcalendarToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->json('gcalendar_credentials')->nullable();
+            $table->json('gcalendar_credentials');
             $table->boolean('gcalendar_integration_active')->default(false);
         });
     }

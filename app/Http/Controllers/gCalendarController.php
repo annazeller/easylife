@@ -34,17 +34,24 @@ class gCalendarController extends Controller
     public function index()
     {
 
+        $user_id = Auth::id();
         $user = Auth::user();
         if ($user->gcalendar_integration_active) {
-            
-            $this->client->setAccessToken($user->gcalendar_credentials);
-            if ($this->client->isAccessTokenExpired()) {
-                $accessToken = $this->client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
-                $user->update([
-                    'gcalendar_credentials' => json_encode($accessToken),
-                ]);
-            }
 
+            $this->client->setAccessToken(Auth::user()->gcalendar_credentials);
+
+            $calendar = new Calendar;
+            $calendars = $calendar
+                ->where('user_id', '=', $user_id)->get();
+
+            $page_data = [
+                'calendars' => $calendars
+            ];
+
+            return view('calendar.index', $page_data);
+
+
+            /**
             $service = new Google_Service_Calendar($this->client);
             $calendarId = Auth::user()->default_calendar; //to do: default calendar field setzen
             $calendarId = 'primary'; //to do: löschen, testing
@@ -78,7 +85,7 @@ class gCalendarController extends Controller
             } else {
                 // TO DO: Return wenn es keine Einträge gibt
                 return dd($user); 
-            }
+            }**/
         } else {
             return redirect()->route('oauthCallback');
         }
@@ -354,18 +361,11 @@ class gCalendarController extends Controller
 
    public function savePrimaryCalendar()
    {
-        $this->client->setAccessToken(Auth::user()->gcalendar_credentials);
-        $title = "Primärkalender";
-
-        $service = new Google_Service_Calendar($this->client);
-        $primaryCalendar = $service->calendarList->get('primary');
-
-        $calendar_id = $primaryCalendar->getId();
 
         $calendar = new Calendar;
         $calendar->user_id = Auth::id();
-        $calendar->title = $title;
-        $calendar->calendar_id = $calendar_id;
+        $calendar->title = 'Primärkalender';
+        $calendar->calendar_id = 'primary';
         $calendar->sync_token = '';
         $calendar->save();
 
@@ -475,15 +475,17 @@ class gCalendarController extends Controller
    }
 
 
-   public function doSyncCalendar(Request $request)
+   public function doSyncCalendar(Request $request) //(Request $request)
    {
         $this->client->setAccessToken(Auth::user()->gcalendar_credentials);
-        $this->validate($request, [
+        
+        /**$this->validate($request, [
             'calendar_id' => 'required'
-        ]);
+        ]);**/
 
         $user_id = Auth::id();
-        $calendar_id = $request->input('calendar_id');    
+        //$calendar_id = $request->input('calendar_id');    
+        
 
         $calendar_ids = Calendar::where('user_id', $user_id)
             ->pluck('calendar_id')
@@ -499,11 +501,12 @@ class gCalendarController extends Controller
 
             $gCalendarId = $calendar->calendar_id;
 
+
             $gServiceCal = new \Google_Service_Calendar($this->client);
             $gCalendar = $gServiceCal->calendars->get($gCalendarId);
             $calendar_timezone = $gCalendar->getTimeZone();
 
-            $termine = ToDoModel::where('calendar_id', $calendar_id)
+            $termine = ToDoModel::where('calendar_id', $gCalendarId)
                 ->pluck('event_id')
                 ->toArray();
             
@@ -522,7 +525,6 @@ class gCalendarController extends Controller
 
             $googlecalendar_events = $gServiceCal->events->listEvents($gCalendarId, $params);
             
-
             while (true) {
 
                 foreach ($googlecalendar_events->getItems() as $g_event) {
@@ -533,29 +535,36 @@ class gCalendarController extends Controller
 
                     if ($g_status != 'cancelled') {
 
-                        if (!$g_event->getStart()->getDateTime) {
+                        if (!$g_event->getStart()->getDateTime()) {
                             $g_datetime_start = Carbon::parse($g_event->getStart()->getDate())
                                 ->tz($calendar_timezone)
                                 ->setTimezone($base_timezone)
-                                ->format('Y-m-d H:i:s');
+                                ->format('Y-m-d H:i');
+                            $allday = 1;
                         } else {
                             $g_datetime_start = Carbon::parse($g_event->getStart()->getDateTime())
                                 ->tz($calendar_timezone)
                                 ->setTimezone($base_timezone)
-                                ->format('Y-m-d H:i:s');
+                                ->format('Y-m-d H:i');
+                            $allday=0;
+
                         }
 
-                        if (!$g_event->getEnd()->getDateTime) {
+                        if (!$g_event->getEnd()->getDateTime()) {
                             $g_datetime_end = Carbon::parse($g_event->getEnd()->getDate())
                                 ->tz($calendar_timezone)
                                 ->setTimezone($base_timezone)
-                                ->format('Y-m-d H:i:s');
+                                ->format('Y-m-d H:i');
                         } else {
                             $g_datetime_end = Carbon::parse($g_event->getEnd()->getDateTime())
                                 ->tz($calendar_timezone)
                                 ->setTimezone($base_timezone)
-                                ->format('Y-m-d H:i:s');
+                                ->format('Y-m-d H:i');
                         }
+
+                        $start_datetime = Carbon::createFromFormat('Y-m-d H:i', $g_datetime_start);
+                        $end_datetime = Carbon::createFromFormat('Y-m-d H:i', $g_datetime_end);
+                        $duration = $end_datetime->diffInMinutes($start_datetime);
 
                         //check if event id is already in the events table
                         if (in_array($g_event_id, $termine)) {
@@ -567,6 +576,8 @@ class gCalendarController extends Controller
                             $event->event_id = $g_event_id;
                             $event->datetime_start = $g_datetime_start;
                             $event->datetime_end = $g_datetime_end;
+                            $event->duration = $duration;
+                            $event->allday = $allday;
                             $event->save();
                         } else {
                             //add event
@@ -577,6 +588,8 @@ class gCalendarController extends Controller
                             $event->event_id = $g_event_id;
                             $event->datetime_start = $g_datetime_start;
                             $event->datetime_end = $g_datetime_end;
+                            $event->duration = $duration;
+                            $event->allday = $allday;
                             $event->save();
                         }
 
@@ -598,7 +611,7 @@ class gCalendarController extends Controller
                 } else {
                     $next_synctoken = str_replace('=ok', '', $googlecalendar_events->getNextSyncToken());
                     //update next sync token
-                    $calendar = Calendar::where('calendar_id', $calendar_id)->first();
+                    $calendar = Calendar::where('calendar_id', $gCalendarId)->first();
                     $calendar->sync_token = $next_synctoken;
                     $calendar->save();
 
@@ -632,18 +645,20 @@ class gCalendarController extends Controller
         $calendar_ids = Calendar::where('user_id', $user_id)
             ->pluck('calendar_id')
             ->toArray();
-
         $termine = ToDoModel::whereIn('calendar_id', $calendar_ids)
             ->get();
 
 
         $data =[];
             foreach ($termine as $event) {
+                if($event->allday == 1) { 
+                    $allday = true; } else { $allday = false; }
                 $subArr=[
                     'id'=>$event->event_id,
                     'title'=>$event->title,
                     'start'=>$event->datetime_start,
                     'end'=>$event->datetime_end,
+                    'allDay'=>$allday
                 ];
                 array_push($data,$subArr);
             }
