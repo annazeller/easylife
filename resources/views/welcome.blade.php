@@ -15,7 +15,7 @@
     <body>
         <header>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#"><img src="/img/logo_easylife.png"></a>
+            <a class="navbar-brand" href="#"><img src="/images/logo_easylife.png"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -41,7 +41,7 @@
                         <h2>Herzlich Willkommen</h2>
                         <h3>bei EasyLife</h3>
                     </div>
-                    <img class="d-block w-100" src="/img/Titelbild.jpg" alt="First slide">
+                    <img class="d-block w-100" src="/images/Titelbild.jpg" alt="First slide">
                 </div>
             </div>
         </div>
