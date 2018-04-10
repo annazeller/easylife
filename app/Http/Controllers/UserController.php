@@ -152,4 +152,22 @@ class UserController extends Controller
  
     }
 
+    public function setEasyLifequestions(Request $r){
+        $user = Auth::user();
+        $user->sleephours = $r->sleephours;
+        $user->sleephours = $r->morningTime;
+        $user->sleephours = $r->eveningTime;
+        $user->sleephours = $r->workingBegin;
+        $user->sleephours = $r->workingHours;
+        $user->sleephours = $r->breakfast;
+        $user->sleephours = $r->dinner;
+        $user->sleephours = $r->drive;
+        $user->sleephours = $r->dinnertime;
+
+        $user->save();
+        return response()->json();
+    }
+
+
+
 }

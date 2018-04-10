@@ -92,12 +92,11 @@ class ToDoController extends Controller
             $rules = array(
                 'title' => 'required',
                 'priority' => 'required',
-                'duration' => 'required'
             );
             $validator = Validator::make(Input::all(), $rules);
 
             if ($validator->fails()) {
-                return Redirect::to('/home/' . $id . '/edit')
+                return Redirect::to('/home')
                     ->withErrors($validator)
                     ->withInput(Input::except('password'));
             } else {
@@ -106,7 +105,12 @@ class ToDoController extends Controller
                 $todo->description = $r->description;
                 $todo->location = $r->location;
                 $todo->priority = $r->priority;
-                $todo->duration =  $r->duration;
+                $stunden = $r->duration_h;
+                $minuten = $r->duration_min;
+
+                $dauer = ($stunden * 60 ) + $minuten;
+
+                $todo->duration = $dauer;
                 $todo->save();
 
                 return response()->json($todo);
