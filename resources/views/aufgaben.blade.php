@@ -22,6 +22,7 @@
                         <button value="{{$todo->id}}" class="edit" type="button" data-toggle="modal" data-target="#edit">
                             Edit
                         </button>
+                        <input value="{{$todo->id}}" class="inline checkbox" type="checkbox">
                     </div>
             </div>
             <div>Titel: <div class="inline" id="{{$todo->id}}title">{{ $todo->title }}</div>
@@ -155,10 +156,8 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="duration">Aufwand:</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="duration_create" required autofocus >
                             <div class="col-sm-10 ">
-                                <div class="h">
+                                <div class="inline h">
                                 <select id="duration_create_h">
                                     <option >00</option>
                                     <option >01</option>
@@ -172,7 +171,7 @@
                                     <option >09</option>
                                 </select>h
                                 </div>
-                                <div class="min">
+                                <div class="inline min">
                                 <select id="duration_create_min">
                                     <option >00</option>
                                     <option >05</option>
@@ -229,6 +228,24 @@
                 }
             });
         });
+
+        $(document).on('click', '.checkbox', function() {
+            var idElementCheck = $(this).val();
+
+            console.log("I am in");
+
+            $.ajax({
+                type: 'POST',
+                url: "done",
+                dataType: 'text',
+                data: {
+                    'id': idElementCheck
+                },
+                success: function (data) {
+                }
+            });
+        });
+
         $(".createsubmit").click(function () {
             $.ajax({
                 type: 'POST',
@@ -244,7 +261,7 @@
                 },
                 success: function (data) {
                     var json = JSON.parse(data);
-                    var newtodo = "<div id="+json.id+"><div class='titel'><div class='buttons'><button value="+json.id+" class='btn-dell'>x</button><button value="+json.id+" class='edit' type='button' data-toggle='modal' data-target='#edit'>Edit</button></div></div><div>Titel:<div id="+json.id+'title'+">"+json.title+"</div></div><div>Beschreibung:<div id="+json.id+'description'+">"+json.description+"</div></div><div>Priorität:<div id="+json.id+'priority'+">"+json.priority+"</div></div> <div>Aufwand:<div id="+json.id+'duration'+">"+json.duration+"</div></div><div>Ort:<div id="+json.id+'location'+">"+json.location+"</div></div></div>";
+                    var newtodo = "<div id="+json.id+"><div class='titel'><div class='buttons'><button value="+json.id+" class='btn-dell'>x</button><button value="+json.id+" class='edit' type='button' data-toggle='modal' data-target='#edit'>Edit</button></div></div><div>Titel:<div class='inline' id="+json.id+'title'+">"+json.title+"</div></div><div>Beschreibung:<div class='inline' id="+json.id+'description'+">"+json.description+"</div></div><div>Priorität:<div class='inline' id="+json.id+'priority'+">"+json.priority+"</div></div> <div>Aufwand:<div class='inline' id="+json.id+'duration'+">"+json.duration+"</div></div><div class='inline'>Ort:<div class='inline' id="+json.id+'location'+">"+json.location+"</div></div></div>";
                     $( "#todos" ).append( newtodo );
                     $('#title_create').val('');
                     $('#description_create').val('');
@@ -255,6 +272,7 @@
                 }
             });
         });
+
         $(document).on('click', '.edit', function() {
             var idElementToEdit = $(this).val();
             idToEdit = idElementToEdit;

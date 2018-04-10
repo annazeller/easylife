@@ -140,5 +140,25 @@ class ToDoController extends Controller
 
         return response()->json();
     }
+
+    public function checkToDo(Request $r)
+    {
+        $elementid = $r->id;
+        $todo = ToDoModel::find($elementid);
+
+        $currentstate = $todo->completed;
+
+        if($currentstate == 0) {
+            $todo->completed = 1;
+        }
+        elseif ($currentstate == 1)
+        {
+            $todo->completed = 0;
+        }
+
+        $todo->save();
+
+        return response()->json();
+    }
 }
 
