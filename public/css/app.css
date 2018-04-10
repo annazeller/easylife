@@ -2237,3 +2237,69 @@ body.login_page {
     overflow: auto;
     overflow-x: hidden;
 }
+
+#sleephours_h {
+    background-color: black;
+}
+
+#sleephours_min {
+    background-color: black;
+}
+
+#morningTime_h {
+    background-color: black;
+}
+
+#morningTime_min {
+    background-color: black;
+}
+
+#eveningTime_h {
+    background-color: black;
+}
+
+#eveningTime_min {
+    background-color: black;
+}
+
+#workingHours_h {
+    background-color: black;
+}
+
+#workingHours_min {
+    background-color: black;
+}
+
+#drive_h {
+    background-color: black;
+}
+
+#drive_min {
+    background-color: black;
+}
+
+#workingBegin_h {
+    background-color: black;
+}
+
+#workingBegin_min {
+    background-color: black;
+}
+#breakfast_h {
+    background-color: black;
+}
+#breakfast_min {
+    background-color: black;
+}
+#dinner_h {
+    background-color: black;
+}
+#dinner_min {
+    background-color: black;
+}
+#dinnertime_h {
+    background-color: black;
+}
+#dinnertime_min {
+    background-color: black;
+}
