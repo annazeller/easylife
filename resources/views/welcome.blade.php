@@ -1,61 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="{{ app()->getLocale() }}">
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+        <meta charset="utf-8" />
+        <title>Easylife Registrieren</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta content="" name="description" />
+        <meta content="" name="author" />
+        <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}" type="image/x-icon" />
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ asset('images/apple-touch-icon-114-precomposed.png') }}">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ asset('images/apple-touch-icon-144-precomposed.png') }}">
 
-        <title>easyLife</title>
+        <!-- CSRF Token -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
+        <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <link href="/css/style.css" rel="stylesheet" type="text/css">
-    </head>
-    <body>
-        <header>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#"><img src="/images/logo_easylife.png"></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <link href="{{ asset('fonts/font-awesome/css/font-awesome.css') }}" rel="stylesheet" type="text/css"/>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-auto">
-                @if (Route::has('login'))
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/login') }}">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/register') }}">Registrieren</a>
-                    </li>
-                @endif
-                </ul>
-            </div>
-            </nav>
-        </header>
-        <div id="header" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active d-flex justify-content-center align-items-center">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h2>Herzlich Willkommen</h2>
-                        <h3>bei EasyLife</h3>
+        <!-- Styles -->
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <link href="{{ asset('plugins/pace/pace-theme-flash.css') }}" rel="stylesheet" type="text/css" media="screen"/>
+        <link href="{{ asset('plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('plugins/bootstrap/css/bootstrap-theme.min.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('plugins/perfect-scrollbar/perfect-scrollbar.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('css/responsive.css') }}" rel="stylesheet" type="text/css"/>
+        @stack('styles')
+</head>
+    <body class="login_page">
+        <div class="login-wrapper">
+            <div class="container text-center mt-4">
+                <div class="row">
+                    <div id="login" class="login loginpage col-md-8 col-md-offset-2">
+                        <h1><a href="#" title="Registerquestion Page" tabindex="-1">Easylife</a></h1>
                     </div>
-                    <img class="d-block w-100" src="/images/Titelbild.jpg" alt="First slide">
+                    <div class="flex-center position-ref full-height">
+               @if (Route::has('login'))
+                   <div class="row content zentrum">
+                       <div class="col-md-8 col-md-offset-2 mt-5">
+                               <p style="color:white; font-size: 45px;">
+                                   Herzlich Willkommen </br> bei easyLife
+                               </p>
+                               <p style="color:white; font-size: 20px; margin-top:30px; margin-bottom:30px;">
+                                       EasyLife hilft Dir dabei Deinen Tagesablauf richtig zu planen. Trage einfach Deine To Dos ein und der EasyLife Kalender generiert Dir automatisch Deinen perfekten Tag.
+                               </p>
+                       <div class="col-md-6 col-md-offset-3">
+                               <div class="col-sm-6 inline-block text-right">
+                                    <a href="{{ url('/login') }}" class="register list-item btn btn-orange btn-block" id="login">Login</a>
+                               </div>
+                               <div class="col-sm-6 inline-block text-left">
+                                    <a href="{{ url('/register') }}" class="register list-item btn btn-orange btn-block" id="register">Registrieren</a>
+                               </div>
+                       </div>
+                       </div>
+               @endif
+                   </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="container text-center mt-4">
-            <div class="row">
-                <div class="col-8 offset-md-2">
-                    <p>EasyLife hilft Dir dabei Deinen Tagesablauf richtig zu planen. Trage einfach Deine To Dos ein und der EasyLife Kalender generiert Dir automatisch Deinen perfekten Tag.</p>
-                </div>
-            </div>
-        </div>
-
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <script src="/js/init.js">
     </body>
 </html>
