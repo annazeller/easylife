@@ -31,18 +31,19 @@
 </head>
     <body class="login_page">
         <div class="login-wrapper">
-            <div class="container">
+            <div class="container text-center mt-4">
                 <div class="row">
-                    <div id="login" class="login loginpage">
+                    <div id="login" class="login loginpage col-md-8 col-md-offset-2">
                         <h1><a href="#" title="Registerquestion Page" tabindex="-1">Easylife</a></h1>
                         <div class="">
-                            Herzlich willkommen! Gleich kanns losgehen: Zuvor beantworte uns jedoch bitte einige Fragen zu deinem Alltag um dir deinen perfekten persönlichen easyLife Kalender erstellen zu können.
+                            Herzlich Willkommen! Gleich kanns losgehen: Zuvor beantworte uns jedoch bitte einige Fragen zu deinem Alltag, damit wir Dir Deinen perfekten persönlichen easyLife Kalender erstellen können.
                             <form>
                                 <div class="form-group">
                             <label class="control-label col-sm-2" for="sleephours">Wie lange willst Du schlafen?</label>
-                            <div class="col-sm-10 ">
+                            <div class="col-sm-10">
                                 <div class="inline h">
-                                <select id="sleepHours_h">
+                                <select class="dropdown" id="sleepHours_h">
+
                                     <option >00</option>
                                     <option >01</option>
                                     <option >02</option>
@@ -56,7 +57,9 @@
                                 </select>h
                                 </div>
                                 <div class="inline min">
-                                <select id="sleepHours_min">
+
+                                <select class="dropdown" id="sleepHours_min">
+
                                     <option >00</option>
                                     <option >05</option>
                                     <option >10</option>
@@ -77,14 +80,14 @@
                             <label class="control-label col-sm-2" for="morningTime">Wie viel Zeit brauchst Du, um Dich morgens fertig zu machen?</label>
                             <div class="col-sm-10 ">
                                 <div class="inline h">
-                                <select id="morningTime_h">
+                                <select class="dropdown" id="morningTime_h">
                                     <option >00</option>
                                     <option >01</option>
                                     <option >02</option>
                                 </select>h
                                 </div>
                                 <div class="inline min">
-                                <select id="morningTime_min">
+                                <select class="dropdown" id="morningTime_min">
                                     <option >00</option>
                                     <option >05</option>
                                     <option >10</option>
@@ -105,13 +108,13 @@
                             <label class="control-label col-sm-2" for="eveningTime">Wie viel Zeit brauchst Du, um Dich Bettfertig zu machen?</label>
                             <div class="col-sm-10 ">
                                 <div class="inline h">
-                                <select id="eveningTime_h">
+                                <select class="dropdown" id="eveningTime_h">
                                     <option >00</option>
                                     <option >01</option>
                                 </select>h
                                 </div>
                                 <div class="inline min">
-                                <select id="eveningTime_min" name="duration">
+                                <select class="dropdown" id="eveningTime_min" name="duration">
                                     <option >00</option>
                                     <option >05</option>
                                     <option >10</option>
@@ -132,7 +135,7 @@
                             <label class="control-label col-sm-2" for="workingHours">Wie viele Stunden arbeitest Du täglich?</label>
                             <div class="col-sm-10 ">
                                 <div class="inline h">
-                                <select id="workingHours_h">
+                                <select class="dropdown" id="workingHours_h">
                                     <option >00</option>
                                     <option >01</option>
                                     <option >02</option>
@@ -146,7 +149,7 @@
                                 </select>h
                                 </div>
                                 <div class="inline min">
-                                <select id="workingHours_min">
+                                <select class="dropdown" id="workingHours_min">
                                     <option >00</option>
                                     <option >30</option>
                                 </select>min
@@ -157,7 +160,7 @@
                             <label class="control-label col-sm-2" for="drive">Wie lange fährst Du auf die Arbeit?</label>
                             <div class="col-sm-10 ">
                                 <div class="inline h">
-                                <select id="drive_h">
+                                <select class="dropdown" id="drive_h">
                                     <option >00</option>
                                     <option >01</option>
                                     <option >02</option>
@@ -165,7 +168,7 @@
                                 </select>h
                                 </div>
                                 <div class="inline min">
-                                <select id="drive_min">
+                                <select class="dropdown" id="drive_min">
                                     <option >00</option>
                                     <option >05</option>
                                     <option >10</option>
@@ -186,7 +189,7 @@
                             <label class="control-label col-sm-2" for="workingBegin">Wann beginnt Deine reguläre Arbeitszeit?</label>
                             <div class="col-sm-10 ">
                                 <div class="inline h">
-                                <select id="workingBegin_h">
+                                <select class="dropdown" id="workingBegin_h">
                                     <option >05</option>
                                     <option >06</option>
                                     <option >07</option>
@@ -210,7 +213,7 @@
                                 </select>:
                                 </div>
                                 <div class="inline min">
-                                <select id="workingBegin_min">
+                                <select class="dropdown" id="workingBegin_min">
                                     <option >00</option>
                                     <option >05</option>
                                     <option >10</option>
@@ -223,7 +226,7 @@
                                     <option >50</option>
                                     <option >45</option>
                                     <option >55</option>
-                                </select>
+                                </select>Uhr
                                 </div>
                             </div>
                         </div>
@@ -231,13 +234,13 @@
                             <label class="control-label col-sm-2" for="breakfast">Wie lange frühstückst Du durchschnittlich?</label>
                             <div class="col-sm-10 ">
                                 <div class="inline h">
-                                <select id="breakfast_h">
+                                <select class="dropdown" id="breakfast_h">
                                     <option >00</option>
                                     <option >01</option>
                                 </select>h
                                 </div>
                                 <div class="inline min">
-                                <select id="breakfast_min">
+                                <select class="dropdown" id="breakfast_min">
                                     <option >00</option>
                                     <option >05</option>
                                     <option >10</option>
@@ -258,7 +261,7 @@
                             <label class="control-label col-sm-2" for="dinnertime">Wann isst Du zu Abend?</label>
                             <div class="col-sm-10 ">
                                 <div class="inline h">
-                                <select id="dinnertime_h">
+                                <select class="dropdown" id="dinnertime_h">
                                     <option >17</option>
                                     <option >18</option>
                                     <option selected="selected">19</option>
@@ -269,7 +272,7 @@
                                 </select>:
                                 </div>
                                 <div class="inline min">
-                                <select id="dinnertime_min">
+                                <select class="dropdown" id="dinnertime_min">
                                     <option >00</option>
                                     <option >05</option>
                                     <option >10</option>
@@ -282,7 +285,7 @@
                                     <option >50</option>
                                     <option >45</option>
                                     <option >55</option>
-                                </select>
+                                </select>Uhr
                                 </div>
                             </div>
                         </div>
@@ -290,14 +293,14 @@
                             <label class="control-label col-sm-2" for="dinner">Wie lange isst Du zu Abend?</label>
                             <div class="col-sm-10 ">
                                 <div class="inline h">
-                                <select id="dinner_h">
+                                <select class="dropdown" id="dinner_h">
                                     <option >00</option>
                                     <option >01</option>
                                     <option >02</option>
                                 </select>h
                                 </div>
                                 <div class="inline min">
-                                <select id="dinner_min">
+                                <select class="dropdown" id="dinner_min">
                                     <option >00</option>
                                     <option >05</option>
                                     <option >10</option>

@@ -134,23 +134,23 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal" role="form">
+                    <form id="createTodDo" method="post" class="form-horizontal" role="form">
                         <div class="form-group">
-                            <label class="control-label col-sm-2" for="title">Titel:</label>
+                            <label class="control-label col-sm-2" for="title_create">Titel:</label>
                             <div class="col-sm-10 va">
-                                <input type="text" class="form-control" id="title_create" required>
+                                <input type="text" class="form-control" id="title_create" name="title">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="description">Beschreibung:</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control" id="description_create" cols="20" rows="3"></textarea>
+                                <textarea class="form-control" id="description_create" cols="20" rows="3" name="description"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="priority">Priorität:</label>
                             <div class="col-sm-10">
-                                <select id="priority_create">
+                                <select id="priority_create" name="priority">
                                     <option>1</option>
                                     <option>2</option>
                                     <option>3</option>
@@ -162,7 +162,7 @@
                             <label class="control-label col-sm-2" for="duration">Aufwand:</label>
                             <div class="col-sm-10 ">
                                 <div class="inline h">
-                                <select id="duration_create_h">
+                                <select id="duration_create_h" name="duration">
                                     <option >00</option>
                                     <option >01</option>
                                     <option >02</option>
@@ -176,7 +176,7 @@
                                 </select>h
                                 </div>
                                 <div class="inline min">
-                                <select id="duration_create_min">
+                                <select id="duration_create_min" name="duration">
                                     <option >00</option>
                                     <option >05</option>
                                     <option >10</option>
@@ -196,14 +196,25 @@
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="location">Ort:</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="location_create" autofocus>
+                                <input type="text" class="form-control" id="location_create" name="location">
                             </div>
                         </div>
+
+                        <div class="form-group">
+                        <div class="col-xs-5 col-xs-offset-3">
+                        <button type="submit" class="btn btn-success createsubmit">
+                                    {{ __('Speichern') }}
+                                </button>
+
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+                        </div>
+                    </div>
+
                     </form>
                 </div>
-                <div class="modal-footer">
+                <!-- <div class="modal-footer">
                     <button type="button" class="btn btn-success createsubmit" data-dismiss="modal">Speichern</button>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -235,6 +246,38 @@
                 }
             });
         });
+
+      /*
+        $('#create').formValidation({
+        message: 'This value is not valid',
+        excluded: ':disabled',
+        });*/
+
+        $('#createToDo').formValidation({
+        framework: 'bootstrap',
+        excluded: ':disabled',
+        icon: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            title_create: {
+                validators: {
+                    notEmpty: {
+                        message: 'The username is required'
+                    }
+                }
+            },
+            description_create: {
+                validators: {
+                    notEmpty: {
+                        message: 'The password is required'
+                    }
+                }
+            }
+        }
+    });
 
         $(document).on('click', '.checkbox', function() {
             var idElementCheck = $(this).val();
