@@ -2238,68 +2238,12 @@ body.login_page {
     overflow-x: hidden;
 }
 
-#sleephours_h {
+.dropdown {
     background-color: black;
+    height: 25px;
+    box-shadow: 2px 2px 5px 1px rgba(0,0,0,0.3);
 }
 
-#sleephours_min {
-    background-color: black;
-}
-
-#morningTime_h {
-    background-color: black;
-}
-
-#morningTime_min {
-    background-color: black;
-}
-
-#eveningTime_h {
-    background-color: black;
-}
-
-#eveningTime_min {
-    background-color: black;
-}
-
-#workingHours_h {
-    background-color: black;
-}
-
-#workingHours_min {
-    background-color: black;
-}
-
-#drive_h {
-    background-color: black;
-}
-
-#drive_min {
-    background-color: black;
-}
-
-#workingBegin_h {
-    background-color: black;
-}
-
-#workingBegin_min {
-    background-color: black;
-}
-#breakfast_h {
-    background-color: black;
-}
-#breakfast_min {
-    background-color: black;
-}
-#dinner_h {
-    background-color: black;
-}
-#dinner_min {
-    background-color: black;
-}
-#dinnertime_h {
-    background-color: black;
-}
-#dinnertime_min {
-    background-color: black;
+.inline {
+    display: inline-block;
 }
