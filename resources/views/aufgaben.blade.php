@@ -328,7 +328,7 @@
                     document.getElementById(replacetitle).innerHTML = json.title;
                     document.getElementById(replacedescription).innerHTML = json.description;
                     document.getElementById(replacelocation).innerHTML = json.location;
-                    document.getElementById(replaceduration).innerHTML = json.duration;
+                    document.getElementById(replaceduration).innerHTML = json.duration_h + ":"+ json.duration_min;
                     document.getElementById(replacepriority).innerHTML = json.priority;
                 }
             });
