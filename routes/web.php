@@ -55,6 +55,11 @@ Route::get('/registerquestions', function (){
     return view ('registerquestions');
 });
 
-Route::put('/registerquestions', 'easyLifeQuestionController@setEasyLifequestions');
+Route::get('/home', 'ToDoController@index')->name('index');
+
+//Route::put('/registerquestions', 'easyLifeQuestionController@setEasyLifequestions');
+
+Route::post('/registerstep1', 'Auth\RegisterController@step1')->name('registerstep1');
+Route::post('/createWithQuestions', 'Auth\RegisterController@create')->name('createWithQuestions');
 
 Route::get('plan', 'gCalendarController@plan');
