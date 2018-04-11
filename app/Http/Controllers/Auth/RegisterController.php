@@ -7,6 +7,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\Request;
+use Auth;
 
 class RegisterController extends Controller
 {
@@ -29,6 +32,9 @@ class RegisterController extends Controller
      * @var string
      */
     protected $redirectTo = '/home';
+    private $name;
+    private $email;
+    private $password;
 
     /**
      * Create a new controller instance.
@@ -61,12 +67,49 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function create(array $data)
+    public function create(Request $r)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+         $newUser = User::create([
+            'name' => $r->name,
+            'email' => $r->email,
+            'password' => Hash::make($r->password),
+            'dinner' => session()->get('dinner'),
+            'sleephours' => session()->get('sleephours'),
+            'morningtime' => session()->get('morningtime'),
+            'eveningTime' => session()->get('eveningTime'),
+            'workingHours' => session()->get('workingHours'),
+            'breakfast' => session()->get('breakfast'),
+            'workingBegin' => session()->get('workingBegin'),
+            'dinnertime' => session()->get('dinnertime'),
+            'drive' => session()->get('drive'),
         ]);
+
+        Auth::login($newUser);
+        return Redirect::to('/home');
+    }
+
+    public function step1(Request $r)
+    {
+        $dinner = ($r->dinner_h * 60 ) + $r->dinner_min;
+        $sleephours = ($r->sleepHours_h * 60 ) + $r->sleepHours_min;
+        $morningtime= ($r->morningTime_h * 60 ) + $r->morningTime_min;
+        $eveningTime= ($r->eveningTime_h * 60 ) + $r->eveningTime_min;
+        $workingHours = ($r->workingHours_h * 60 ) + $r->workingHours_min;
+        $breakfast = ($r->breakfast_h * 60 ) + $r->breakfast_min;
+        $drive = ($r->drive_h * 60 ) + $r->drive_min;
+        $workingBegin = $r->workingBegin_h . ':' . $r->workingBegin_min . ':00';
+        $dinnertime =  $r->dinner_time_h . ':' . $r->dinner_time_min . ':00';
+
+        session()->put('dinner', $dinner);
+        session()->put('sleephours',$sleephours);
+        session()->put('morningtime',$morningtime);
+        session()->put('eveningTime',$eveningTime);
+        session()->put('workingHours',$workingHours);
+        session()->put('breakfast',$breakfast);
+        session()->put('drive',$drive);
+        session()->put('workingBegin',$workingBegin);
+        session()->put('dinnertime',$dinnertime);
+
+        return redirect('register');
     }
 }

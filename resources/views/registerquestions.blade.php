@@ -344,8 +344,8 @@
         $(document).on('click', '#submit1', function () {
             console.log($('#workingBegin_h').val());
             $.ajax({
-                type: 'PUT',
-                url: "registerquestions",
+                type: 'POST',
+                url: "registerstep1",
                 dataType: 'text',
                 data: {
                     'user_id': 2,
@@ -367,7 +367,6 @@
                     'workingHours_min': $('#workingHours_min').val(),
                     'workingBegin_h': $('#workingBegin_h').val(),
                     'workingBegin_min': $('#workingBegin_min').val(),
-
                 },
                 success: function (data) {
                     console.log('success');

@@ -51,7 +51,7 @@
                                     <a href="{{ url('/login') }}" class="register list-item btn btn-orange btn-block" id="login">Login</a>
                                </div>
                                <div class="col-sm-6 inline-block text-left">
-                                    <a href="{{ url('/register') }}" class="register list-item btn btn-orange btn-block" id="register">Registrieren</a>
+                                    <a href="{{ url('/registerquestions') }}" class="register list-item btn btn-orange btn-block" id="register">Registrieren</a>
                                </div>
                        </div>
                        </div>
