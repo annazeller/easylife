@@ -13,34 +13,34 @@
     <button class="btn btn-default" id="buttonNewToDO" type="button" data-toggle="modal" data-target="#create">Neue Aufgabe</button>
     <!-- Liste aller persönlichen ToDos -->
     <div id="todos">
-    @foreach ($todos as $todo)
-        <div id="{{$todo->id}}">
-            <div class="titel">
-                {{ $todo->titel }}
+        @foreach ($todos as $todo)
+            <div id="{{$todo->id}}">
+                <div class="titel">
+                    {{ $todo->titel }}
                     <div class="buttons">
                         <button value="{{$todo->id}}" class="btn-dell">x</button>
                         <button value="{{$todo->id}}" class="edit" type="button" data-toggle="modal" data-target="#edit">
                             Edit
                         </button>
                         @if ($todo->completed == 1)
-                        <input value="{{$todo->id}}" class="inline checkbox" type="checkbox" checked>
+                            <input value="{{$todo->id}}" class="inline checkbox" type="checkbox" checked>
                         @else
                             <input value="{{$todo->id}}" class="inline checkbox" type="checkbox">
-                            @endif
+                        @endif
                     </div>
+                </div>
+                <div>Titel: <div class="inline" id="{{$todo->id}}title">{{ $todo->title }}</div>
+                </div>
+                <div>Beschreibung: <div class="inline" id="{{$todo->id}}description">{{ $todo->description }}</div>
+                </div>
+                <div>Priorität: <div class="inline" id="{{$todo->id}}priority">{{ $todo->priority }}</div>
+                </div>
+                <div>Aufwand: <div class="inline" id="{{$todo->id}}duration">{{ date('H:i', mktime(0, ( $todo->duration ))) }} </div> h
+                </div>
+                <div>Ort: <div class="inline" id="{{$todo->id}}location">{{ $todo->location }}</div>
+                </div>
             </div>
-            <div>Titel: <div class="inline" id="{{$todo->id}}title">{{ $todo->title }}</div>
-            </div>
-            <div>Beschreibung: <div class="inline" id="{{$todo->id}}description">{{ $todo->description }}</div>
-            </div>
-            <div>Priorität: <div class="inline" id="{{$todo->id}}priority">{{ $todo->priority }}</div>
-            </div>
-            <div>Aufwand: <div class="inline" id="{{$todo->id}}duration">{{ date('H:i', mktime(0, ( $todo->duration ))) }} </div> h
-            </div>
-            <div>Ort: <div class="inline" id="{{$todo->id}}location">{{ $todo->location }}</div>
-            </div>
-        </div>
-    @endforeach
+        @endforeach
     </div>
     <!-- Liste aller persönlichen ToDos ENDE -->
     <!-- Edit a todo -->
@@ -134,23 +134,23 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="createTodDo" method="post" class="form-horizontal" role="form">
+                    <form class="form-horizontal" role="form">
                         <div class="form-group">
-                            <label class="control-label col-sm-2" for="title_create">Titel:</label>
+                            <label class="control-label col-sm-2" for="title">Titel:</label>
                             <div class="col-sm-10 va">
-                                <input type="text" class="form-control" id="title_create" name="title">
+                                <input type="text" class="form-control" id="title_create" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="description">Beschreibung:</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control" id="description_create" cols="20" rows="3" name="description"></textarea>
+                                <textarea class="form-control" id="description_create" cols="20" rows="3"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="priority">Priorität:</label>
                             <div class="col-sm-10">
-                                <select id="priority_create" name="priority">
+                                <select id="priority_create">
                                     <option>1</option>
                                     <option>2</option>
                                     <option>3</option>
@@ -162,59 +162,48 @@
                             <label class="control-label col-sm-2" for="duration">Aufwand:</label>
                             <div class="col-sm-10 ">
                                 <div class="inline h">
-                                <select id="duration_create_h" name="duration">
-                                    <option >00</option>
-                                    <option >01</option>
-                                    <option >02</option>
-                                    <option >03</option>
-                                    <option >04</option>
-                                    <option >05</option>
-                                    <option >06</option>
-                                    <option >07</option>
-                                    <option >08</option>
-                                    <option >09</option>
-                                </select>h
+                                    <select id="duration_create_h">
+                                        <option >00</option>
+                                        <option >01</option>
+                                        <option >02</option>
+                                        <option >03</option>
+                                        <option >04</option>
+                                        <option >05</option>
+                                        <option >06</option>
+                                        <option >07</option>
+                                        <option >08</option>
+                                        <option >09</option>
+                                    </select>h
                                 </div>
                                 <div class="inline min">
-                                <select id="duration_create_min" name="duration">
-                                    <option >00</option>
-                                    <option >05</option>
-                                    <option >10</option>
-                                    <option >15</option>
-                                    <option >20</option>
-                                    <option >25</option>
-                                    <option selected="selected">30</option>
-                                    <option >35</option>
-                                    <option >40</option>
-                                    <option >50</option>
-                                    <option >45</option>
-                                    <option >55</option>
-                                </select>min
+                                    <select id="duration_create_min">
+                                        <option >00</option>
+                                        <option >05</option>
+                                        <option >10</option>
+                                        <option >15</option>
+                                        <option >20</option>
+                                        <option >25</option>
+                                        <option selected="selected">30</option>
+                                        <option >35</option>
+                                        <option >40</option>
+                                        <option >50</option>
+                                        <option >45</option>
+                                        <option >55</option>
+                                    </select>min
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="location">Ort:</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="location_create" name="location">
+                                <input type="text" class="form-control" id="location_create" autofocus>
                             </div>
                         </div>
-
-                        <div class="form-group">
-                        <div class="col-xs-5 col-xs-offset-3">
-                        <button type="submit" class="btn btn-success createsubmit">
-                                    {{ __('Speichern') }}
-                                </button>
-
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
-                        </div>
-                    </div>
-
                     </form>
                 </div>
-                <!-- <div class="modal-footer">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-success createsubmit" data-dismiss="modal">Speichern</button>
-                </div> -->
+                </div>
             </div>
         </div>
     </div>
@@ -246,38 +235,6 @@
                 }
             });
         });
-
-      /*
-        $('#create').formValidation({
-        message: 'This value is not valid',
-        excluded: ':disabled',
-        });*/
-
-        $('#createToDo').formValidation({
-        framework: 'bootstrap',
-        excluded: ':disabled',
-        icon: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        fields: {
-            title_create: {
-                validators: {
-                    notEmpty: {
-                        message: 'The username is required'
-                    }
-                }
-            },
-            description_create: {
-                validators: {
-                    notEmpty: {
-                        message: 'The password is required'
-                    }
-                }
-            }
-        }
-    });
 
         $(document).on('click', '.checkbox', function() {
             var idElementCheck = $(this).val();
