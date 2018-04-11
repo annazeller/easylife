@@ -78,8 +78,8 @@
 
                     <p class="submit">
                         <button type="submit" class="btn btn-orange btn-block">
-                                    {{ __('Registrieren') }}
-                                </button>
+                                    {{ __('Weiter') }}
+                        </button>
                     </p>
                 </form>
 

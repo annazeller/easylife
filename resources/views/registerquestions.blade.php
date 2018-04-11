@@ -28,6 +28,7 @@
         <link href="{{ asset('plugins/perfect-scrollbar/perfect-scrollbar.css') }}" rel="stylesheet" type="text/css"/>
         <link href="{{ asset('css/responsive.css') }}" rel="stylesheet" type="text/css"/>
         @stack('styles')
+
 </head>
     <body class="login_page">
         <div class="login-wrapper">
@@ -129,7 +130,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-2" for="workingHours">Wie viele Stunden arbeitest Du täglich?</label>
+                            <label class="control-label col-sm-2" for="workingHours">Wie viele Stunden arbeitest Du täglich? (incl. Pausen)</label>
                             <div class="row">
                                 <div class="inline h text-right">
                                 <select class="dropdown" id="workingHours_h">

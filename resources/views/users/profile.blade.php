@@ -141,7 +141,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4" for="workingHours">Wie viele Stunden arbeitest Du täglich?</label>
+                                    <label class="control-label col-sm-4" for="workingHours">Wie viele Stunden arbeitest Du täglich? (incl. Pausen)</label>
                                     <div class="col-sm-10 ">
                                         <div class="inline h">
                                             <select id="workingHours_h">
@@ -235,7 +235,7 @@
                                                 <option >50</option>
                                                 <option >45</option>
                                                 <option >55</option>
-                                            </select>
+                                            </select>Uhr
                                         </div>
                                     </div>
                                 </div>
@@ -294,7 +294,7 @@
                                                 <option >50</option>
                                                 <option >45</option>
                                                 <option >55</option>
-                                            </select>
+                                            </select>Uhr
                                         </div>
                                     </div>
                                 </div>
