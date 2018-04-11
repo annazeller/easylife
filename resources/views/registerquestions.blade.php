@@ -42,7 +42,7 @@
                             <label class="control-label col-sm-2" for="sleephours">Wie lange willst Du schlafen?</label>
                             <div class="col-sm-10 ">
                                 <div class="inline h">
-                                <select id="sleephours_h">
+                                <select id="sleepHours_h">
                                     <option >00</option>
                                     <option >01</option>
                                     <option >02</option>
@@ -56,7 +56,7 @@
                                 </select>h
                                 </div>
                                 <div class="inline min">
-                                <select id="sleephours_min">
+                                <select id="sleepHours_min">
                                     <option >00</option>
                                     <option >05</option>
                                     <option >10</option>
@@ -344,7 +344,7 @@
         });
 
         $(document).on('click', '#submit1', function () {
-            console.log('Hi');
+            console.log($('#workingBegin_h').val());
             $.ajax({
                 type: 'PUT',
                 url: "registerquestions",
@@ -353,8 +353,8 @@
                     'user_id': 2,
                     'dinner_h': $('#dinner_h').val(),
                     'dinner_min': $('#dinner_min').val(),
-                    'dinner_time_h': $('#dinner_time_h').val(),
-                    'dinner_time_min': $('#dinner_time_min').val(),
+                    'dinner_time_h': $('#dinnertime_h').val(),
+                    'dinner_time_min': $('#dinnertime_min').val(),
                     'breakfast_h': $('#breakfast_h').val(),
                     'breakfast_min': $('#breakfast_min').val(),
                     'morningTime_h': $('#morningTime_h').val(),

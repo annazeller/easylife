@@ -17,23 +17,23 @@
                 <button class="edit" type="button" data-toggle="modal" data-target="#edit">
                     Edit
                 </button>
-            <div> Du schläfst pro Tag durschnittlich: {{ $user->sleephours }} h
+            <div> Du schläfst pro Tag durschnittlich: {{ date('H:i', mktime(0, ( $user->sleephours )))}} h
             </div>
-            <div> Durchschnittlich frühstückst du: {{ $user->breakfast }} h
+            <div> Durchschnittlich frühstückst du: {{ date('H:i', mktime(0, ( $user->breakfast ))) }} h
             </div>
-            <div> Du arbeitest täglich: {{ $user->workingHours }} h
+            <div> Du arbeitest täglich: {{ date('H:i', mktime(0, ( $user->workingHours )))  }} h
             </div>
-            <div> Deine Arbeitszeit beginnt um: {{ $user->workingBegin }}
+            <div> Deine Arbeitszeit beginnt um: {{ date('g:ia', strtotime($user->workingBegin)) }}
             </div>
-            <div> Dein Arbeitsweg beträgt: {{ $user->drive }} h
+            <div> Dein Arbeitsweg beträgt: {{ date('H:i', mktime(0, ( $user->drive ))) }} h
             </div>
-            <div> Durschnittliche morgentliche Herrichtzeit: {{ $user->morningTime }} h
+            <div> Durschnittliche morgentliche Herrichtzeit: {{ date('H:i', mktime(0, ( $user->morningTime ))) }} h
             </div>
-            <div> Durschnittliche morgentliche Zeit dich bettfertig zu machen: {{ $user->eveningTime }} h
+            <div> Durschnittliche morgentliche Zeit dich bettfertig zu machen: {{ date('H:i', mktime(0, ( $user->eveningTime ))) }} h
             </div>
-            <div> Abends isst du meistens: {{ $user->dinner }} h
+            <div> Abends isst du meistens: {{ date('H:i', mktime(0, ( $user->dinner ))) }} h
             </div>
-            <div> Abends isst du meistens um: {{ $user->dinnertime }}
+            <div> Abends isst du meistens um: {{ date('g:ia', strtotime($user->dinnertime))  }}
             </div>
             </div>
 

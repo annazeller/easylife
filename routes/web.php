@@ -55,7 +55,6 @@ Route::get('/registerquestions', function (){
     return view ('registerquestions');
 });
 
-Route::put('/registerquestions', 'UserController@setEasyLifequestions')->name('registerquestions');
-
+Route::put('/registerquestions', 'easyLifeQuestionController@setEasyLifequestions');
 
 Route::get('plan', 'gCalendarController@plan');
