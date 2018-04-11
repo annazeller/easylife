@@ -51,6 +51,7 @@ Route::group(['middleware' => 'auth'], function () {
 Route::get('/home', 'ToDoController@index')->name('index');
 Route::resource('todos','ToDoController');
 Route::post('/deleteAjax', 'ToDoController@ajaxDelete');
+Route::post('/done', 'ToDoController@checkToDo');
 Route::get('/registerquestions', function (){
     return view ('registerquestions');
 });
