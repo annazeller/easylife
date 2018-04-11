@@ -369,8 +369,7 @@
                     'workingBegin_min': $('#workingBegin_min').val(),
                 },
                 success: function (data) {
-                    console.log('success');
-                }
+                    window.location.href = "/register";                }
             });
         });
     });
