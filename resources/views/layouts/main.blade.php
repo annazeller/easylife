@@ -106,21 +106,15 @@
                             </a>
                         </li>
                         <li class="">
-                            <a href="javascript:;">
+                            <a href="{{ url('/todos') }}">
                                 <i class="fa fa-tasks"></i>
                                 <span class="title">Aufgaben</span>
                             </a>
                         </li>
                         <li class="">
-                            <a href="javascript:;">
+                            <a href="{{ url('/calendar') }}">
                                 <i class="fa fa-calendar"></i>
                                 <span class="title">Kalender</span>
-                            </a>
-                        </li>
-                        <li class="">
-                            <a href="javascript:;">
-                                <i class="fa fa-suitcase"></i>
-                                <span class="title">Projekte</span>
                             </a>
                         </li>
                         <li class="">
@@ -129,12 +123,6 @@
                                 <span class="title">Statistik</span>
                             </a>
                         </li>
-<!--                         <li class="">
-                            <a href="javascript:;">
-                                <i class="fa fa-cog"></i>
-                                <span class="title">Einstellungen</span>
-                            </a>
-                        </li> -->
                     </ul>
                 </div>
             </div>
@@ -143,16 +131,7 @@
                     <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
                         <div class="page-title">
                             <div class="pull-left">
-                            <h1 class="title">Dashboard</h1>                            </div>
-                            <div class="pull-right hidden-xs">
-                                <ol class="breadcrumb">
-                                    <li>
-                                        <a href="index.html"><i class="fa fa-home"></i>Home</a>
-                                    </li>
-                                    <li class="active">
-                                        <strong>Dashboard</strong>
-                                    </li>
-                                </ol>
+                                <h1 class="title">Dashboard</h1>                            
                             </div>
                         </div>
                     </div>
@@ -163,7 +142,6 @@
                                 <h2 class="title pull-left">Aufgaben</h2>
                                 <div class="actions panel_actions pull-right">
                                     <i class="box_toggle fa fa-chevron-down"></i>
-                                    <i class="box_setting fa fa-cog" data-toggle="modal" href="#section-settings"></i>
                                     <i class="box_close fa fa-times"></i>
                                 </div>
                             </header>
@@ -186,23 +164,6 @@
         <script src="{{ asset('plugins/perfect-scrollbar/perfect-scrollbar.min.js') }}" type="text/javascript"></script>
         <script src="{{ asset('plugins/viewport/viewportchecker.js') }}" type="text/javascript"></script>
         <script src="{{ asset('js/scripts.js') }}" type="text/javascript"></script>
-        <div class="modal" id="section-settings" tabindex="-1" role="dialog" aria-labelledby="ultraModal-Label" aria-hidden="true">
-            <div class="modal-dialog animated bounceInDown">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Einstellungen</h4>
-                    </div>
-                    <div class="modal-body">
-                        let's push things forward!
-                    </div>
-                    <div class="modal-footer">
-                        <button data-dismiss="modal" class="btn btn-default" type="button">schließen</button>
-                        <button class="btn btn-success" type="button">speichern</button>
-                    </div>
-                </div>
-            </div>
-        </div>
         @stack('scripts')
     </body>
 </html>

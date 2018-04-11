@@ -34,10 +34,10 @@
         <div class="login-wrapper">
             <div class="container text-center mt-4">
                 <div class="row">
-                    <div id="login" class="login loginpage col-md-8 col-md-offset-2">
+                    <div id="" class="login loginpage col-md-8 col-md-offset-2">
                         <h1><a href="#" title="Registerquestion Page" tabindex="-1">Easylife</a></h1>
                         <div class="">
-                            Herzlich Willkommen! Gleich kanns losgehen: Zuvor beantworte uns jedoch bitte einige Fragen zu deinem Alltag, damit wir Dir Deinen perfekten persönlichen easyLife Kalender erstellen können. Diese Angaben sind auch nachträglich in deinem Profil bearbeitbar.
+                            <p>Herzlich Willkommen! Gleich kanns losgehen: Zuvor beantworte uns jedoch bitte einige Fragen zu deinem Alltag, damit wir Dir Deinen perfekten persönlichen easyLife Kalender erstellen können. Diese Angaben sind auch nachträglich in deinem Profil bearbeitbar.</p>
                             <form>
                                 <div class="form-group">
                             <label class="control-label col-sm-2" for="sleephours">Wie lange willst Du schlafen?</label>
