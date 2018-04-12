@@ -6,7 +6,7 @@
 
 @section('content')
 @include('partials.alert')
-<form method="POST">
+<!-- <form method="POST">
     <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
     <p>
         <label for="title">Title</label>
@@ -36,7 +36,39 @@
         </div>
     </div>
     <button>Create Event</button>
-</form>
+</form> -->
+<form class="form-horizontal" role="form" method="POST">
+                    <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="title">Titel:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="title" value="{{ old('title') }}" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="calendar_id">Kalender:</label>
+                        <div class="col-sm-10">
+                            <select name="calendar_id" id="calendar_id">
+                                @foreach($calendars as $cal)
+                                <option value="{{ $cal->calendar_id }}">{{ $cal->title }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="start_date">Startdatum:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="datetime_start" id="datetime_start" class="datetimepicker" value="{{ old('datetime_start') }}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="end_date">Enddatum:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="datetime_end" id="datetime_end" class="datetimepicker" value="{{ old('datetime_end') }}">
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-success pull-right" data-dismiss="">speichern</button>
+                </form>
 @endsection
 
 
