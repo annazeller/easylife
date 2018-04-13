@@ -129,17 +129,17 @@
             <section id="main-content" class=" ">
                 <section class="wrapper main-wrapper" style=''>
                     <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
-                        <div class="page-title">
+  <!--                       <div class="page-title">
                             <div class="pull-left">
                                 <h1 class="title">Dashboard</h1>                            
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="clearfix"></div>
                     <div class="col-lg-12">
                         <section class="box ">
                             <header class="panel_header">
-                                <h2 class="title pull-left">Aufgaben</h2>
+                                <h2 class="title pull-left">@yield('title')</h2>
                                 <div class="actions panel_actions pull-right">
                                     <i class="box_toggle fa fa-chevron-down"></i>
                                     <i class="box_close fa fa-times"></i>

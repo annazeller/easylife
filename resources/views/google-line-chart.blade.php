@@ -1,5 +1,5 @@
 @extends('layouts.main')
- 
+@section('title', 'Statistik')
 @section('content')
 <html>
   <head>

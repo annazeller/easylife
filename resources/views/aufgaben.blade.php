@@ -1,5 +1,6 @@
 @extends('layouts.main')
 @section('content')
+@section('title', 'Aufgaben')
 <style>
 .hidden{
 display: none;

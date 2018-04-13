@@ -3,7 +3,7 @@
 	@push('styles')
 		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css">
 	@endpush
-
+	@section('title', 'Kalender')
 	@section('content')
 
 	<div class="container">

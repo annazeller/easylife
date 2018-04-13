@@ -1,5 +1,5 @@
 @extends('layouts.main')
-
+@section('title', 'Dashboard')
 @section('content')
 @include('partials.alert')
 <div class="row">
