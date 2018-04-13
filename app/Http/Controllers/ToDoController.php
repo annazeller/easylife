@@ -162,7 +162,7 @@ class ToDoController extends Controller
 
         $todo->save();
 
-        return response()->json();
+        return response()->json($todo);
     }
 }
 
