@@ -30,19 +30,19 @@ display: inline-block;
                 <table id="example" class="display table table-hover table-condensed" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th>Nr.</th><th>Titel</th><th>Beschreibung</th><th>Priorität</th><th>Aufwand</th><th>Ort</th><th></th>                 </tr>
+                            <th>Status</th><th>Titel</th><th>Beschreibung</th><th>Priorität</th><th>Aufwand</th><th>Ort</th><th></th>                 </tr>
                         </thead>
                         <tbody>
-                            <tr><td id="{{$todo->id}}">{{$todo->id}}</td><td id="{{$todo->id}}title">{{ $todo->title }}</td><td id="{{$todo->id}}description">{{ $todo->description }}</td><td id="{{$todo->id}}priority">{{ $todo->priority }}</td><td id="{{$todo->id}}duration">{{ date('H:i', mktime(0, ( $todo->duration ))) }}</td><td id="{{$todo->id}}location">{{ $todo->location }}</td><td><div class="buttons pull-right">
+                            <tr><td id="{{$todo->id}}">@if ($todo->completed == 1)
+                                        <input value="{{$todo->id}}" class="inline checkbox btn btn-default" type="checkbox" checked>
+                                    @else
+                                        <input value="{{$todo->id}}" class="inline checkbox btn btn-default" type="checkbox">
+                                    @endif</td><td id="{{$todo->id}}title">{{ $todo->title }}</td><td id="{{$todo->id}}description">{{ $todo->description }}</td><td id="{{$todo->id}}priority">{{ $todo->priority }}</td><td id="{{$todo->id}}duration">{{ date('H:i', mktime(0, ( $todo->duration ))) }}</td><td id="{{$todo->id}}location">{{ $todo->location }}</td><td><div class="buttons pull-right">
                             <button value="{{$todo->id}}" class="btn btn-danger btn-dell">löschen</button>
                             <button value="{{$todo->id}}" class="btn btn-default edit" type="button" data-toggle="modal" data-target="#edit">
                             bearbeiten
                             </button>
-                            @if ($todo->completed == 1)
-                            <input value="{{$todo->id}}" class="inline checkbox btn btn-default" type="checkbox" checked>
-                            @else
-                            <input value="{{$todo->id}}" class="inline checkbox btn btn-default" type="checkbox">
-                            @endif
+
                         </div></td></tr>
                     </tbody>
                 </table>
@@ -56,30 +56,30 @@ display: inline-block;
             <div class = "done">
             @foreach ($todos as $todo)
                 @if ($todo->completed == 1)
-                <div id="{{$todo->id}}">
-                    <div class="titel">
-                        {{ $todo->titel }}
-                    </div>
-                    <table id="example" class="display table table-hover table-condensed" cellspacing="0" width="100%">
-                        <thead>
-                        <tr>
-                            <th>Nr.</th><th>Titel</th><th>Beschreibung</th><th>Priorität</th><th>Aufwand</th><th>Ort</th><th></th>                 </tr>
-                        </thead>
-                        <tbody>
-                        <tr><td id="{{$todo->id}}">{{$todo->id}}</td><td id="{{$todo->id}}title">{{ $todo->title }}</td><td id="{{$todo->id}}description">{{ $todo->description }}</td><td id="{{$todo->id}}priority">{{ $todo->priority }}</td><td id="{{$todo->id}}duration">{{ date('H:i', mktime(0, ( $todo->duration ))) }}</td><td id="{{$todo->id}}location">{{ $todo->location }}</td><td><div class="buttons pull-right">
-                                    <button value="{{$todo->id}}" class="btn btn-danger btn-dell">löschen</button>
-                                    <button value="{{$todo->id}}" class="btn btn-default edit" type="button" data-toggle="modal" data-target="#edit">
-                                        bearbeiten
-                                    </button>
-                                    @if ($todo->completed == 1)
-                                        <input value="{{$todo->id}}" class="inline checkbox btn btn-default" type="checkbox" checked>
-                                    @else
-                                        <input value="{{$todo->id}}" class="inline checkbox btn btn-default" type="checkbox">
-                                    @endif
-                                </div></td></tr>
-                        </tbody>
-                    </table>
-                </div>
+                        <div id="{{$todo->id}}">
+                            <div class="titel">
+                                {{ $todo->titel }}
+                            </div>
+                            <table id="example" class="display table table-hover table-condensed" cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>Status</th><th>Titel</th><th>Beschreibung</th><th>Priorität</th><th>Aufwand</th><th>Ort</th><th></th>                 </tr>
+                                </thead>
+                                <tbody>
+                                <tr><td id="{{$todo->id}}">@if ($todo->completed == 1)
+                                            <input value="{{$todo->id}}" class="inline checkbox btn btn-default" type="checkbox" checked>
+                                        @else
+                                            <input value="{{$todo->id}}" class="inline checkbox btn btn-default" type="checkbox">
+                                        @endif</td><td id="{{$todo->id}}title">{{ $todo->title }}</td><td id="{{$todo->id}}description">{{ $todo->description }}</td><td id="{{$todo->id}}priority">{{ $todo->priority }}</td><td id="{{$todo->id}}duration">{{ date('H:i', mktime(0, ( $todo->duration ))) }}</td><td id="{{$todo->id}}location">{{ $todo->location }}</td><td><div class="buttons pull-right">
+                                            <button value="{{$todo->id}}" class="btn btn-danger btn-dell">löschen</button>
+                                            <button value="{{$todo->id}}" class="btn btn-default edit" type="button" data-toggle="modal" data-target="#edit">
+                                                bearbeiten
+                                            </button>
+
+                                        </div></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
                 @endif
             @endforeach
             </div>
@@ -382,7 +382,16 @@ display: inline-block;
                     document.getElementById(replacetitle).innerHTML = json.title;
                     document.getElementById(replacedescription).innerHTML = json.description;
                     document.getElementById(replacelocation).innerHTML = json.location;
-                    document.getElementById(replaceduration).innerHTML = json.duration_h + ":"+ json.duration_min;
+
+                    var h = '0'+ Math.floor(json.duration /60);
+                    var min = json.duration % 60;
+
+                    if(min < 10)
+                    {
+                        min = '0' + min;
+                    }
+
+                    document.getElementById(replaceduration).innerHTML = h + ":" +min;
                     document.getElementById(replacepriority).innerHTML = json.priority;
                 }
             });
