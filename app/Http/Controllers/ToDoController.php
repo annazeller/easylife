@@ -91,7 +91,6 @@ class ToDoController extends Controller
         if(Auth::check()) {
             $rules = array(
                 'title' => 'required',
-                'priority' => 'required',
             );
             $validator = Validator::make(Input::all(), $rules);
 

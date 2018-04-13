@@ -9,7 +9,6 @@ display: none;
 display: inline-block;
 }
 </style>
-<!-- Neues ToDo erstellen -->
 <div class="row">
     <button class="btn btn-default" id="buttonNewToDO" type="button" data-toggle="modal" data-target="#create"> Aufgaben erstellen</button>
     <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#showall" aria-expanded="false" aria-controls="showall">
@@ -20,7 +19,7 @@ display: inline-block;
     <div class="card card-body">
         <!-- Liste aller persönlichen ToDos -->
         <div id="todos"><br>
-            <h3>Offene:</h3>
+            <h3>ToDo:</h3>
             <div class="offene">
             @foreach ($todos as $todo)
                 @if ($todo->completed == 0)
@@ -94,15 +93,16 @@ display: inline-block;
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
+                <button type="button" class="close clearerror" data-dismiss="modal" aria-label="Close" aria-hidden="true">&times;</button>
                 <h5 class="modal-title">Aufgabe bearbeiten</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
             </div>
             <div class="modal-body">
+                <div class="alert alert-danger hidden errormessage" role="alert">
+                    Bitte gib mindestens einen Titel für dein überarbeitetes ToDo an.
+                </div>
                 <form class="form-horizontal" role="form">
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="title">Titel:</label>
+                        <label class="control-label col-sm-2" for="title">Titel:*</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="title_edit" autofocus >
                         </div>
@@ -174,13 +174,16 @@ display: inline-block;
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <button type="button" class="close clearerror" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">Aufgabe erstellen</h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-danger hidden errormessage" role="alert">
+                    Bitte gib mindestens einen Titel für dein neues ToDo an.
+                </div>
                 <form class="form-horizontal" role="form">
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="title">Titel:</label>
+                        <label class="control-label col-sm-2" for="title">Titel:*</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="title_create" required>
                         </div>
@@ -246,7 +249,7 @@ display: inline-block;
                 </form>
             </div>
             <div class="modal-footer">
-                <button data-dismiss="modal" class="btn btn-default" type="button">schließen</button>
+                <button data-dismiss="modal" class="btn btn-default clearerror" type="button">schließen</button>
                 <button type="button" class="btn btn-success createsubmit" data-dismiss="modal">speichern</button>
             </div>
         </div>
@@ -309,6 +312,21 @@ display: inline-block;
         });
 
         $(".createsubmit").click(function () {
+            var validatedata = {};
+            validatedata.title = $('#title_create').val(),
+            validatedata.priority = $('#priority_create').val();
+            validatedata.duration_h = $('#duration_create_h').val();
+            validatedata.duration_min = $('#duration_create_min').val();
+
+            for (i in validatedata) {
+                if ($.trim(validatedata[i]) === "") {
+                    $( ".errormessage" ).removeClass( 'hidden' );
+
+                    return false;
+                }
+            }
+
+
             $.ajax({
                 type: 'POST',
                 url: "todos",
@@ -331,6 +349,8 @@ display: inline-block;
                     $('#duration_create_h').val(0);
                     $('#duration_create_min').val(30);
                     $('#location_create').val('');
+
+                    $( ".errormessage" ).addClass( 'hidden' );
                 }
             });
         });
@@ -355,6 +375,20 @@ display: inline-block;
             $('#edit').modal('show');
         });
         $(".editsubmit").click(function () {
+            var validatedata = {};
+            validatedata.title = $('#title_edit').val(),
+                validatedata.priority = $('#priority_edit').val();
+            validatedata.duration_h = $('#duration_edit_h').val();
+            validatedata.duration_min = $('#duration_edit_min').val();
+
+            for (i in validatedata) {
+                if ($.trim(validatedata[i]) === "") {
+                    $( ".errormessage" ).removeClass( 'hidden' );
+
+                    return false;
+                }
+            }
+
 
             $.ajax({
                 type: 'PUT',
@@ -392,6 +426,11 @@ display: inline-block;
                     document.getElementById(replacepriority).innerHTML = json.priority;
                 }
             });
+        });
+
+
+        $(".clearerror").click(function () {
+            $( ".errormessage" ).addClass( 'hidden' );
         });
     });
 </script>

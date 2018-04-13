@@ -18,12 +18,11 @@
                 <div class="uprofile-content">
                     <div class="">
                         <h4>Dein Alltag:</h4>
-                        <br>
-                        <p>Hier kannst du deinen persönlichen Alltag anzeigen und auch bearbeiten.</p><br>
+                        <p>Hier kannst du deine persönlichen Alltagsangaben anzeigen und auch bearbeiten.</p><br>
                         <div id="easylifequestions">
                             <div>
-                                <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#showall" aria-expanded="#showall" aria-controls="showall">Alltag anzeigen</button>
-                                <button class="btn btn-default edit" type="button" data-toggle="modal" data-target="#edit">Alltag bearbeiten</button>
+                                <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#showall" aria-expanded="#showall" aria-controls="showall">Anzeigen</button>
+                                <button class="btn btn-default edit" type="button" data-toggle="modal" data-target="#edit">Neu festlegen</button>
                             </div>
                             
                             <br>
@@ -72,7 +71,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Alltag bearbeiten</h4>
+                <h4 class="modal-title">Alltagsdaten neu festlegen</h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" role="form">
