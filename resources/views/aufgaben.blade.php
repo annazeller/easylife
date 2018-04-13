@@ -347,13 +347,9 @@ display: inline-block;
             var durationsplit = (document.getElementById (idElementToEdit+'duration').innerHTML).split(":");
             durationsplit[0];
             durationsplit[1];
-            console.log(durationsplit[1]);
 
             $('#duration_edit_h').val(durationsplit[0]);
-            $('#duration_edit_min').val(30);
-
-            console.log(durationsplit[0]);
-            console.log(durationsplit[1]);
+            $('#duration_edit_min').val(durationsplit[1]);
 
             $('#edit').modal('show');
         });
