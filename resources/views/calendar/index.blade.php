@@ -7,7 +7,6 @@
 	@section('content')
 
 	<div class="container">
-	    <h3>Kalender</h3>
 	    <button id="sync" class="btn btn">Sync</button>
 	    <div id="calendar" width="100%"></div>
 	</div>

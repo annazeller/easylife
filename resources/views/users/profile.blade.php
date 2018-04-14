@@ -1,5 +1,5 @@
 @extends('layouts.main')
- 
+@section('title', 'Profil')
 @section('content')
 <div class="col-lg-12">
     <section class="box nobox">
