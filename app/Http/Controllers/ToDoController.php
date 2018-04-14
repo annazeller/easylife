@@ -48,6 +48,10 @@ class ToDoController extends Controller
 
             $validator = Validator::make(Input::all(), $rules);
 
+            if ($r->duration_h == '00' && $r->duration_min == '00') {
+                return Redirect::to('/home');
+            }
+
             if ($validator->fails()) {
                 return Redirect::to('/home')
                     ->withErrors($validator)
@@ -76,16 +80,6 @@ class ToDoController extends Controller
         }
     }
 
-    public function edit($id)
-    {
-        if(Auth::check()) {
-            $todo = ToDoModel::find($id);
-
-            return View::make('edit')
-                ->with('todo', $todo);
-        }
-    }
-
     public function update(Request $r, $id)
     {
         if(Auth::check()) {
@@ -93,6 +87,10 @@ class ToDoController extends Controller
                 'title' => 'required',
             );
             $validator = Validator::make(Input::all(), $rules);
+
+            if ($r->duration_h == '00' && $r->duration_min == '00') {
+                return Redirect::to('/home');
+            }
 
             if ($validator->fails()) {
                 return Redirect::to('/home')
