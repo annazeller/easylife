@@ -7,32 +7,38 @@
     <script type="text/javascript">
       var result = {!! $result !!};
       console.log(result);
-
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
+
       function drawChart() {
-        var data = new google.visualization.DataTable(result);
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Task');
-        data.addColumn('number', 'Hours per Day');
-        data.addRows([
-        ['Erledigt', result.anzahlErledigt],
-        ['Offen', result.anzahlOffen],
-        ['Geplant', result.anzahlGeplant],
-        ['Ungeplant', result.anzahlUngeplant],
-]);
-        var options = {
-          title: 'result Line Chart',
-          curveType: 'function',
-          legend: { position: 'bottom' }
-        };
-        var chart = new google.visualization.LineChart(document.getElementById('linechart'));
-        chart.draw(data, options);
-      }
+
+      // Create the data table.
+      var data = new google.visualization.DataTable();
+      var aE = parseInt(result.Erledigt);
+      var aO = parseInt(result.Offen);
+      data.addColumn('string', 'Aufgaben');
+      data.addColumn('number', 'Anzahl der Aufgaben');
+      data.addRows([
+        ['Erledigt', aE],
+        ['Offen', aO]
+      ]);
+
+        // Set chart options
+      var options = {'title':'Meine Aufgaben',
+                     'width':600,
+                     'height':500,
+                      pieHole: 0.4,
+                      colors: ['#FE8F3E','#293541']
+                   };
+
+      // Instantiate and draw our chart, passing in some options.
+      var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+      chart.draw(data, options);
+    }
     </script>
   </head>
   <body>
-    <div id="linechart" style="width: 900px; height: 500px"></div>
+    <div id="piechart" style="width: 900px; height: 500px;"></div>
   </body>
 </html>
 @endsection

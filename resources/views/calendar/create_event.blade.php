@@ -1,5 +1,5 @@
 @extends('layouts.main')
-
+@section('title', 'Termin erstellen')
 @push('styles')
 <link rel="stylesheet" href="{{ asset('assets/jquery-datetimepicker/build/jquery.datetimepicker.min.css') }}">
 @endpush

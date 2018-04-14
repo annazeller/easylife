@@ -1,4 +1,5 @@
 @extends('layouts.main')
+@section('title', 'Einstellungen')
 @section('content')
 <div class="row">
 	<form action="{{route('users.updateProfile', $user)}}" method="post">
