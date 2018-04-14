@@ -170,7 +170,6 @@
                         <div class="col-sm-6 ">
                             <div class="inline h">
                                 <select id="workingHours_h">
-                                    <option >00</option>
                                     <option >01</option>
                                     <option >02</option>
                                     <option >03</option>

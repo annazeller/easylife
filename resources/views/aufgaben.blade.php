@@ -100,6 +100,9 @@ display: inline-block;
                 <div class="alert alert-danger hidden errormessage" role="alert">
                     Bitte gib mindestens einen Titel für dein überarbeitetes ToDo an.
                 </div>
+                <div class="alert alert-warning hidden errormessageDuration" role="alert">
+                    Was wäre ein ToDo ohne Zeitaufwand? Bitte wähle eine Dauer von mindestens 5 Minuten.
+                </div>
                 <form class="form-horizontal" role="form">
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="title">Titel:*</label>
@@ -181,6 +184,9 @@ display: inline-block;
                 <div class="alert alert-danger hidden errormessage" role="alert">
                     Bitte gib mindestens einen Titel für dein neues ToDo an.
                 </div>
+                <div class="alert alert-warning hidden errormessageDuration" role="alert">
+                    Was wäre ein ToDo ohne Zeitaufwand? Bitte wähle eine Dauer von mindestens 5 Minuten.
+                </div>
                 <form class="form-horizontal" role="form">
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="title">Titel:*</label>
@@ -198,7 +204,7 @@ display: inline-block;
                         <label class="control-label col-sm-2" for="priority">Priorität:</label>
                         <div class="col-sm-10">
                             <select id="priority_create">
-                                <option>1</option>
+                                <option selected="selected">1</option>
                                 <option>2</option>
                                 <option>3</option>
                                 <option>4</option>
@@ -210,16 +216,16 @@ display: inline-block;
                         <div class="col-sm-10 ">
                             <div class="inline h">
                                 <select id="duration_create_h">
-                                    <option >00</option>
-                                    <option >01</option>
-                                    <option >02</option>
-                                    <option >03</option>
-                                    <option >04</option>
-                                    <option >05</option>
-                                    <option >06</option>
-                                    <option >07</option>
-                                    <option >08</option>
-                                    <option >09</option>
+                                    <option>00</option>
+                                    <option>01</option>
+                                    <option>02</option>
+                                    <option>03</option>
+                                    <option>04</option>
+                                    <option>05</option>
+                                    <option>06</option>
+                                    <option>07</option>
+                                    <option>08</option>
+                                    <option>09</option>
                                 </select>h
                             </div>
                             <div class="inline min">
@@ -265,8 +271,6 @@ display: inline-block;
             }
         });
         var idToEdit;
-
-
 
         $(document).on('click', '.btn-dell', function() {
             var idElementToDelete = $(this).val();
@@ -315,8 +319,6 @@ display: inline-block;
             var validatedata = {};
             validatedata.title = $('#title_create').val(),
             validatedata.priority = $('#priority_create').val();
-            validatedata.duration_h = $('#duration_create_h').val();
-            validatedata.duration_min = $('#duration_create_min').val();
 
             for (i in validatedata) {
                 if ($.trim(validatedata[i]) === "") {
@@ -326,6 +328,14 @@ display: inline-block;
                 }
             }
 
+            var durationValidate_min = $('#duration_create_h').val();
+            var durationValidate_h = $('#duration_create_min').val();
+
+                if (durationValidate_min === '00' && durationValidate_h === '00')
+                {
+                    $( ".errormessageDuration" ).removeClass( 'hidden' );
+                    return false;
+                }
 
             $.ajax({
                 type: 'POST',
@@ -345,12 +355,13 @@ display: inline-block;
                     $( "#todos" ).load(" #todos, #showall, newtodo");
                     $('#title_create').val('');
                     $('#description_create').val('');
-                    $('#priority_create').val('');
-                    $('#duration_create_h').val(0);
+                    $('#priority_create').val(1);
+                    $('#duration_create_h').val('00');
                     $('#duration_create_min').val(30);
                     $('#location_create').val('');
 
                     $( ".errormessage" ).addClass( 'hidden' );
+                    $( ".errormessageDuration" ).addClass( 'hidden' );
                 }
             });
         });
@@ -381,6 +392,7 @@ display: inline-block;
             validatedata.duration_h = $('#duration_edit_h').val();
             validatedata.duration_min = $('#duration_edit_min').val();
 
+
             for (i in validatedata) {
                 if ($.trim(validatedata[i]) === "") {
                     $( ".errormessage" ).removeClass( 'hidden' );
@@ -389,6 +401,14 @@ display: inline-block;
                 }
             }
 
+            var durationValidate_min = $('#duration_edit_h').val();
+            var durationValidate_h = $('#duration_edit_min').val();
+
+            if (durationValidate_min === '00' && durationValidate_h === '00')
+            {
+                $( ".errormessageDuration" ).removeClass( 'hidden' );
+                return false;
+            }
 
             $.ajax({
                 type: 'PUT',
@@ -431,6 +451,7 @@ display: inline-block;
 
         $(".clearerror").click(function () {
             $( ".errormessage" ).addClass( 'hidden' );
+            $( ".errormessageDuration" ).addClass( 'hidden' );
         });
     });
 </script>
