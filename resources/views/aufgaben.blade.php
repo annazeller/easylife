@@ -21,19 +21,17 @@ display: inline-block;
         <div id="todos"><br>
             <h3>ToDo:</h3>
             <div class="offene">
+                <table id="example" class="display table table-hover table-condensed" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th>Status</th><th>Titel</th><th>Beschreibung</th><th>Priorität</th><th>Aufwand</th><th>Ort</th><th></th>                 </tr>
+                    </thead>
+                    <tbody class="offenebody">
             @foreach ($todos as $todo)
                 @if ($todo->completed == 0)
             <div id="{{$todo->id}}">
-                <div class="titel">
-                    {{ $todo->titel }}
-                </div>
-                <table id="example" class="display table table-hover table-condensed" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th>Status</th><th>Titel</th><th>Beschreibung</th><th>Priorität</th><th>Aufwand</th><th>Ort</th><th></th>                 </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td id="{{$todo->id}}">@if ($todo->completed == 1)
+
+                            <tr id="{{$todo->id}}tr"><td >@if ($todo->completed == 1)
                                         <input value="{{$todo->id}}" class="inline checkbox btn btn-default" type="checkbox" checked>
                                     @else
                                         <input value="{{$todo->id}}" class="inline checkbox btn btn-default" type="checkbox">
@@ -44,29 +42,27 @@ display: inline-block;
                             </button>
 
                         </div></td></tr>
-                    </tbody>
-                </table>
+
             </div>
                 @endif
             @endforeach
+                </tbody>
+                </table>
             </div>
 
 
             <h3>Erledigt:</h3>
             <div class = "done">
+                <table id="example" class="display table table-hover table-condensed" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th>Status</th><th>Titel</th><th>Beschreibung</th><th>Priorität</th><th>Aufwand</th><th>Ort</th><th></th>                 </tr>
+                    </thead>
+                    <tbody class="donebody">
             @foreach ($todos as $todo)
                 @if ($todo->completed == 1)
-                        <div id="{{$todo->id}}">
-                            <div class="titel">
-                                {{ $todo->titel }}
-                            </div>
-                            <table id="example" class="display table table-hover table-condensed" cellspacing="0" width="100%">
-                                <thead>
-                                <tr>
-                                    <th>Status</th><th>Titel</th><th>Beschreibung</th><th>Priorität</th><th>Aufwand</th><th>Ort</th><th></th>                 </tr>
-                                </thead>
-                                <tbody>
-                                <tr><td id="{{$todo->id}}">@if ($todo->completed == 1)
+
+                    <tr id="{{$todo->id}}tr"><td >@if ($todo->completed == 1)
                                             <input value="{{$todo->id}}" class="inline checkbox btn btn-default" type="checkbox" checked>
                                         @else
                                             <input value="{{$todo->id}}" class="inline checkbox btn btn-default" type="checkbox">
@@ -77,11 +73,11 @@ display: inline-block;
                                             </button>
 
                                         </div></td></tr>
-                                </tbody>
-                            </table>
-                        </div>
+
                 @endif
             @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
         <!-- Liste aller persönlichen ToDos ENDE -->
@@ -274,7 +270,8 @@ display: inline-block;
 
         $(document).on('click', '.btn-dell', function() {
             var idElementToDelete = $(this).val();
-            var divToRemove = $('#'+idElementToDelete);
+            var trToRemove = $('#'+idElementToDelete+'tr');
+
             $.ajax({
                 type: 'POST',
                 url: "deleteAjax",
@@ -283,14 +280,14 @@ display: inline-block;
                     'id': idElementToDelete
                 },
                 success: function (data) {
-                    $(divToRemove).remove();
+                    $(trToRemove).remove();
                 }
             });
         });
 
         $(document).on('click', '.checkbox', function() {
             var idElementCheck = $(this).val();
-            var prepareElement = '#' + idElementCheck;
+            var prepareElement = '#' + idElementCheck + 'tr';
             var div = $(prepareElement);
 
             $.ajax({
@@ -304,12 +301,14 @@ display: inline-block;
 
                     var json = JSON.parse(data);
 
+                    console.log('success');
+
                     if(json.completed === 1) {
-                        $(".done").append(div);
+                        $(".donebody").append(div);
                     }
                     else if(json.completed === 0)
                     {
-                        $(".offene").append(div);
+                        $(".offenebody").append(div);
                     }
                 }
             });
