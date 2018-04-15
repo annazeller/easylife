@@ -21,48 +21,51 @@ display: inline-block;
         <div id="todos"><br>
             <h3>ToDo:</h3>
             <div class="offene">
-                <table id="example" class="display table table-hover table-condensed" cellspacing="0" width="100%">
-                    <thead>
-                    <tr>
-                        <th>Status</th><th>Titel</th><th>Beschreibung</th><th>Priorität</th><th>Aufwand</th><th>Ort</th><th></th>                 </tr>
-                    </thead>
-                    <tbody class="offenebody">
             @foreach ($todos as $todo)
                 @if ($todo->completed == 0)
             <div id="{{$todo->id}}">
-
-                            <tr id="{{$todo->id}}tr"><td >@if ($todo->completed == 1)
+                <div class="titel">
+                    {{ $todo->titel }}
+                </div>
+                <table id="example" class="display table table-hover table-condensed" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Status</th><th>Titel</th><th>Beschreibung</th><th>Priorität</th><th>Aufwand</th><th>Ort</th><th></th><th></th>                  </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td id="{{$todo->id}}" data-label="Status">@if ($todo->completed == 1)
                                         <input value="{{$todo->id}}" class="inline checkbox btn btn-default" type="checkbox" checked>
                                     @else
                                         <input value="{{$todo->id}}" class="inline checkbox btn btn-default" type="checkbox">
-                                    @endif</td><td id="{{$todo->id}}title">{{ $todo->title }}</td><td id="{{$todo->id}}description">{{ $todo->description }}</td><td id="{{$todo->id}}priority">{{ $todo->priority }}</td><td id="{{$todo->id}}duration">{{ date('H:i', mktime(0, ( $todo->duration ))) }}</td><td id="{{$todo->id}}location">{{ $todo->location }}</td><td><div class="buttons pull-right">
-                            <button value="{{$todo->id}}" class="btn btn-danger btn-dell">löschen</button>
-                            <button value="{{$todo->id}}" class="btn btn-default edit" type="button" data-toggle="modal" data-target="#edit">
-                            bearbeiten
-                            </button>
+                                    @endif</td><td id="{{$todo->id}}title" data-label="Titel">{{ $todo->title }}</td><td id="{{$todo->id}}description" data-label="Beschreibung">{{ $todo->description }}</td><td id="{{$todo->id}}priority" data-label="Priorität">{{ $todo->priority }}</td><td id="{{$todo->id}}duration" data-label="Aufwand">{{ date('H:i', mktime(0, ( $todo->duration ))) }}</td><td id="{{$todo->id}}location" data-label="Ort">{{ $todo->location }}</td><td><button value="{{$todo->id}}" class="btn btn-danger btn-dell" data-label="löschen">löschen</button></td><td>
+                                        <button value="{{$todo->id}}" class="btn btn-default edit" type="button" data-toggle="modal" data-target="#edit">bearbeiten</button></td>
 
-                        </div></td></tr>
-
+                        
+                    </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
                 @endif
             @endforeach
-                </tbody>
-                </table>
             </div>
 
 
             <h3>Erledigt:</h3>
             <div class = "done">
-                <table id="example" class="display table table-hover table-condensed" cellspacing="0" width="100%">
-                    <thead>
-                    <tr>
-                        <th>Status</th><th>Titel</th><th>Beschreibung</th><th>Priorität</th><th>Aufwand</th><th>Ort</th><th></th>                 </tr>
-                    </thead>
-                    <tbody class="donebody">
             @foreach ($todos as $todo)
                 @if ($todo->completed == 1)
-
-                    <tr id="{{$todo->id}}tr"><td >@if ($todo->completed == 1)
+                        <div id="{{$todo->id}}">
+                            <div class="titel">
+                                {{ $todo->titel }}
+                            </div>
+                            <table id="example" class="display table table-hover table-condensed" cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>Status</th><th>Titel</th><th>Beschreibung</th><th>Priorität</th><th>Aufwand</th><th>Ort</th><th></th>                 </tr>
+                                </thead>
+                                <tbody>
+                                <tr><td id="{{$todo->id}}">@if ($todo->completed == 1)
                                             <input value="{{$todo->id}}" class="inline checkbox btn btn-default" type="checkbox" checked>
                                         @else
                                             <input value="{{$todo->id}}" class="inline checkbox btn btn-default" type="checkbox">
@@ -73,11 +76,11 @@ display: inline-block;
                                             </button>
 
                                         </div></td></tr>
-
+                                </tbody>
+                            </table>
+                        </div>
                 @endif
             @endforeach
-                    </tbody>
-                </table>
             </div>
         </div>
         <!-- Liste aller persönlichen ToDos ENDE -->
@@ -95,9 +98,6 @@ display: inline-block;
             <div class="modal-body">
                 <div class="alert alert-danger hidden errormessage" role="alert">
                     Bitte gib mindestens einen Titel für dein überarbeitetes ToDo an.
-                </div>
-                <div class="alert alert-warning hidden errormessageDuration" role="alert">
-                    Was wäre ein ToDo ohne Zeitaufwand? Bitte wähle eine Dauer von mindestens 5 Minuten.
                 </div>
                 <form class="form-horizontal" role="form">
                     <div class="form-group">
@@ -180,9 +180,6 @@ display: inline-block;
                 <div class="alert alert-danger hidden errormessage" role="alert">
                     Bitte gib mindestens einen Titel für dein neues ToDo an.
                 </div>
-                <div class="alert alert-warning hidden errormessageDuration" role="alert">
-                    Was wäre ein ToDo ohne Zeitaufwand? Bitte wähle eine Dauer von mindestens 5 Minuten.
-                </div>
                 <form class="form-horizontal" role="form">
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="title">Titel:*</label>
@@ -200,7 +197,7 @@ display: inline-block;
                         <label class="control-label col-sm-2" for="priority">Priorität:</label>
                         <div class="col-sm-10">
                             <select id="priority_create">
-                                <option selected="selected">1</option>
+                                <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
                                 <option>4</option>
@@ -212,16 +209,16 @@ display: inline-block;
                         <div class="col-sm-10 ">
                             <div class="inline h">
                                 <select id="duration_create_h">
-                                    <option>00</option>
-                                    <option>01</option>
-                                    <option>02</option>
-                                    <option>03</option>
-                                    <option>04</option>
-                                    <option>05</option>
-                                    <option>06</option>
-                                    <option>07</option>
-                                    <option>08</option>
-                                    <option>09</option>
+                                    <option >00</option>
+                                    <option >01</option>
+                                    <option >02</option>
+                                    <option >03</option>
+                                    <option >04</option>
+                                    <option >05</option>
+                                    <option >06</option>
+                                    <option >07</option>
+                                    <option >08</option>
+                                    <option >09</option>
                                 </select>h
                             </div>
                             <div class="inline min">
@@ -268,10 +265,11 @@ display: inline-block;
         });
         var idToEdit;
 
+
+
         $(document).on('click', '.btn-dell', function() {
             var idElementToDelete = $(this).val();
-            var trToRemove = $('#'+idElementToDelete+'tr');
-
+            var divToRemove = $('#'+idElementToDelete);
             $.ajax({
                 type: 'POST',
                 url: "deleteAjax",
@@ -280,14 +278,14 @@ display: inline-block;
                     'id': idElementToDelete
                 },
                 success: function (data) {
-                    $(trToRemove).remove();
+                    $(divToRemove).remove();
                 }
             });
         });
 
         $(document).on('click', '.checkbox', function() {
             var idElementCheck = $(this).val();
-            var prepareElement = '#' + idElementCheck + 'tr';
+            var prepareElement = '#' + idElementCheck;
             var div = $(prepareElement);
 
             $.ajax({
@@ -301,14 +299,12 @@ display: inline-block;
 
                     var json = JSON.parse(data);
 
-                    console.log('success');
-
                     if(json.completed === 1) {
-                        $(".donebody").append(div);
+                        $(".done").append(div);
                     }
                     else if(json.completed === 0)
                     {
-                        $(".offenebody").append(div);
+                        $(".offene").append(div);
                     }
                 }
             });
@@ -318,6 +314,8 @@ display: inline-block;
             var validatedata = {};
             validatedata.title = $('#title_create').val(),
             validatedata.priority = $('#priority_create').val();
+            validatedata.duration_h = $('#duration_create_h').val();
+            validatedata.duration_min = $('#duration_create_min').val();
 
             for (i in validatedata) {
                 if ($.trim(validatedata[i]) === "") {
@@ -327,14 +325,6 @@ display: inline-block;
                 }
             }
 
-            var durationValidate_min = $('#duration_create_h').val();
-            var durationValidate_h = $('#duration_create_min').val();
-
-                if (durationValidate_min === '00' && durationValidate_h === '00')
-                {
-                    $( ".errormessageDuration" ).removeClass( 'hidden' );
-                    return false;
-                }
 
             $.ajax({
                 type: 'POST',
@@ -354,13 +344,12 @@ display: inline-block;
                     $( "#todos" ).load(" #todos, #showall, newtodo");
                     $('#title_create').val('');
                     $('#description_create').val('');
-                    $('#priority_create').val(1);
-                    $('#duration_create_h').val('00');
+                    $('#priority_create').val('');
+                    $('#duration_create_h').val(0);
                     $('#duration_create_min').val(30);
                     $('#location_create').val('');
 
                     $( ".errormessage" ).addClass( 'hidden' );
-                    $( ".errormessageDuration" ).addClass( 'hidden' );
                 }
             });
         });
@@ -391,7 +380,6 @@ display: inline-block;
             validatedata.duration_h = $('#duration_edit_h').val();
             validatedata.duration_min = $('#duration_edit_min').val();
 
-
             for (i in validatedata) {
                 if ($.trim(validatedata[i]) === "") {
                     $( ".errormessage" ).removeClass( 'hidden' );
@@ -400,14 +388,6 @@ display: inline-block;
                 }
             }
 
-            var durationValidate_min = $('#duration_edit_h').val();
-            var durationValidate_h = $('#duration_edit_min').val();
-
-            if (durationValidate_min === '00' && durationValidate_h === '00')
-            {
-                $( ".errormessageDuration" ).removeClass( 'hidden' );
-                return false;
-            }
 
             $.ajax({
                 type: 'PUT',
@@ -450,7 +430,6 @@ display: inline-block;
 
         $(".clearerror").click(function () {
             $( ".errormessage" ).addClass( 'hidden' );
-            $( ".errormessageDuration" ).addClass( 'hidden' );
         });
     });
 </script>
