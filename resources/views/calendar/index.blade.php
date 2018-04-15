@@ -8,8 +8,8 @@
 	@section('content')
 
 	<div class="container">
-	    <h3>Kalender</h3>
 	    <button id="sync" class="btn btn">Sync</button>
+	    <button id="plan" class="btn btn-success">Todos für die Woche planen</button>
 	    <div id="calendar" width="100%"></div>
 	</div>
 
@@ -80,6 +80,18 @@
 		                data: {
 		                    'calendar_id': calendar_id
 		                },
+		                success: function () {
+		                	$('#calendar').fullCalendar( 'refetchEvents' );
+		            	}
+	        		});
+				});
+
+				$("#plan").click(function () {
+					var calendar_id = {!! $calendars !!};
+
+		            $.ajax({
+		                type: 'GET',
+		                url: "/freebusy",
 		                success: function () {
 		                	$('#calendar').fullCalendar( 'refetchEvents' );
 		            	}
