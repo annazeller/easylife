@@ -67,8 +67,8 @@
                                     <option >30</option>
                                     <option >35</option>
                                     <option >40</option>
-                                    <option >50</option>
                                     <option >45</option>
+                                    <option >50</option>
                                     <option >55</option>
                                 </select>min
                                 </div>
@@ -95,8 +95,8 @@
                                     <option >30</option>
                                     <option >35</option>
                                     <option selected="selected">40</option>
-                                    <option >50</option>
                                     <option >45</option>
+                                    <option >50</option>
                                     <option >55</option>
                                 </select>min
                                 </div>
@@ -122,8 +122,8 @@
                                     <option >30</option>
                                     <option >35</option>
                                     <option >40</option>
-                                    <option >50</option>
                                     <option >45</option>
+                                    <option >50</option>
                                     <option >55</option>
                                 </select>min
                                 </div>
@@ -175,8 +175,8 @@
                                     <option >30</option>
                                     <option >35</option>
                                     <option >40</option>
-                                    <option >50</option>
                                     <option >45</option>
+                                    <option >50</option>
                                     <option >55</option>
                                 </select>min
                                 </div>
@@ -213,8 +213,8 @@
                                     <option >30</option>
                                     <option >35</option>
                                     <option >40</option>
-                                    <option >50</option>
                                     <option >45</option>
+                                    <option >50</option>
                                     <option >55</option>
                                 </select>Uhr
                                 </div>
@@ -240,8 +240,8 @@
                                     <option >30</option>
                                     <option >35</option>
                                     <option >40</option>
-                                    <option >50</option>
                                     <option >45</option>
+                                    <option >50</option>
                                     <option >55</option>
                                 </select>min
                                 </div>
@@ -272,8 +272,8 @@
                                     <option >30</option>
                                     <option >35</option>
                                     <option >40</option>
-                                    <option >50</option>
                                     <option >45</option>
+                                    <option >50</option>
                                     <option >55</option>
                                 </select>Uhr
                                 </div>
@@ -300,8 +300,8 @@
                                     <option selected="selected">30</option>
                                     <option >35</option>
                                     <option >40</option>
-                                    <option >50</option>
                                     <option >45</option>
+                                    <option >50</option>
                                     <option >55</option>
                                 </select>min
                                 </div>
