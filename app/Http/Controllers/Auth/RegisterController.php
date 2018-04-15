@@ -69,23 +69,30 @@ class RegisterController extends Controller
      */
     public function create(Request $r)
     {
-         $newUser = User::create([
-            'name' => $r->name,
-            'email' => $r->email,
-            'password' => Hash::make($r->password),
-            'dinner' => session()->get('dinner'),
-            'sleephours' => session()->get('sleephours'),
-            'morningtime' => session()->get('morningtime'),
-            'eveningTime' => session()->get('eveningTime'),
-            'workingHours' => session()->get('workingHours'),
-            'breakfast' => session()->get('breakfast'),
-            'workingBegin' => session()->get('workingBegin'),
-            'dinnertime' => session()->get('dinnertime'),
-            'drive' => session()->get('drive'),
+        $this->validate(request(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6|confirmed'
         ]);
 
-        Auth::login($newUser);
-        return Redirect::to('/home');
+            $newUser = User::create([
+                'name' => $r->name,
+                'email' => $r->email,
+                'password' => Hash::make($r->password),
+                'dinner' => session()->get('dinner'),
+                'sleephours' => session()->get('sleephours'),
+                'morningtime' => session()->get('morningtime'),
+                'eveningTime' => session()->get('eveningTime'),
+                'workingHours' => session()->get('workingHours'),
+                'breakfast' => session()->get('breakfast'),
+                'workingBegin' => session()->get('workingBegin'),
+                'dinnertime' => session()->get('dinnertime'),
+                'drive' => session()->get('drive'),
+            ]);
+
+            Auth::login($newUser);
+            return Redirect::to('/home');
+        
     }
 
     public function step1(Request $r)
