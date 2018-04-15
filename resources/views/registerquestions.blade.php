@@ -341,7 +341,9 @@
         });
 
         $(document).on('click', '#submit1', function () {
-            console.log($('#workingBegin_h').val());
+            console.log( $('#morningTime_h').val());
+            console.log($('#morningTime_min').val());
+
             $.ajax({
                 type: 'POST',
                 url: "registerstep1",

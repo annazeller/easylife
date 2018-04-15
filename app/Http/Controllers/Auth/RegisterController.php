@@ -81,7 +81,7 @@ class RegisterController extends Controller
                 'password' => Hash::make($r->password),
                 'dinner' => session()->get('dinner'),
                 'sleephours' => session()->get('sleephours'),
-                'morningtime' => session()->get('morningtime'),
+                'morningTime' => session()->get('morningTime'),
                 'eveningTime' => session()->get('eveningTime'),
                 'workingHours' => session()->get('workingHours'),
                 'breakfast' => session()->get('breakfast'),
@@ -92,14 +92,14 @@ class RegisterController extends Controller
 
             Auth::login($newUser);
             return Redirect::to('/home');
-        
+
     }
 
     public function step1(Request $r)
     {
         $dinner = ($r->dinner_h * 60 ) + $r->dinner_min;
         $sleephours = ($r->sleepHours_h * 60 ) + $r->sleepHours_min;
-        $morningtime= ($r->morningTime_h * 60 ) + $r->morningTime_min;
+        $morningTime= ($r->morningTime_h * 60 ) + $r->morningTime_min;
         $eveningTime= ($r->eveningTime_h * 60 ) + $r->eveningTime_min;
         $workingHours = ($r->workingHours_h * 60 ) + $r->workingHours_min;
         $breakfast = ($r->breakfast_h * 60 ) + $r->breakfast_min;
@@ -109,7 +109,7 @@ class RegisterController extends Controller
 
         session()->put('dinner', $dinner);
         session()->put('sleephours',$sleephours);
-        session()->put('morningtime',$morningtime);
+        session()->put('morningTime',$morningTime);
         session()->put('eveningTime',$eveningTime);
         session()->put('workingHours',$workingHours);
         session()->put('breakfast',$breakfast);
