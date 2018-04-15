@@ -341,8 +341,6 @@
         });
 
         $(document).on('click', '#submit1', function () {
-            console.log( $('#morningTime_h').val());
-            console.log($('#morningTime_min').val());
 
             $.ajax({
                 type: 'POST',
