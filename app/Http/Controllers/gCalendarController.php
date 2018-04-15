@@ -680,12 +680,12 @@ class gCalendarController extends Controller
             array_push($freeTimeStart,$start);
         }
 
-        $timeSpent = 0;
+        
 
         for ($i=0; $i < count($freeTime); $i++) { 
 
             $collection = $this->plan($freeTime[$i]);
-
+            $timeSpent = 0;
             foreach ($collection as $todo) {
                 $title = $todo->title;
                 $desc = $todo->description;
