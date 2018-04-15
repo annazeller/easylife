@@ -23,9 +23,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('calendar', 'gCalendarController@index');
     Route::get('/dashboard', 'gCalendarController@dashboard')->name('dashboard');
 
-    Route::get('/calendar/create', 'gCalendarController@createCalendar');
-    Route::post('/calendar/create', 'gCalendarController@doCreateCalendar');
-
     Route::get('/event/create', 'gCalendarController@createEvent');
     Route::post('/event/create', 'gCalendarController@doCreateEvent');
 
@@ -46,21 +43,22 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('statistics', 'gChartsController@googleLineChart');
 
+    Route::any('freebusy', 'gCalendarController@getFreeBusy');
+
+    Route::get('/home', 'gCalendarController@index')->name('index');
+    Route::resource('todos','ToDoController');
+    Route::post('/deleteAjax', 'ToDoController@ajaxDelete');
+    Route::post('/done', 'ToDoController@checkToDo');
 });
 
-Route::get('/home', 'ToDoController@index')->name('index');
-Route::resource('todos','ToDoController');
-Route::post('/deleteAjax', 'ToDoController@ajaxDelete');
-Route::post('/done', 'ToDoController@checkToDo');
-Route::get('/registerquestions', function (){
-    return view ('registerquestions');
-});
-
-Route::get('/home', 'ToDoController@index')->name('index');
+    
+    Route::get('/registerquestions', function (){
+        return view ('registerquestions');
+    });
 
 //Route::put('/registerquestions', 'easyLifeQuestionController@setEasyLifequestions');
 
 Route::post('/registerstep1', 'Auth\RegisterController@step1')->name('registerstep1');
 Route::post('/createWithQuestions', 'Auth\RegisterController@create')->name('createWithQuestions');
 
-Route::get('plan', 'gCalendarController@plan');
+

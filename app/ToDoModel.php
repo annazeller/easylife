@@ -15,6 +15,6 @@ class ToDoModel extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'userId', 'title', 'description', 'location', 'priority', 'duration', 'completed'
+        'userId', 'title', 'description', 'location', 'priority', 'duration', 'completed', 'scheduled'
     ];
 }
