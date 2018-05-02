@@ -3,7 +3,7 @@
 @section('content')
 @include('partials.alert')
 <div class="row">
-    <a href="/event/create" class="btn btn-default" type="button" data-toggle="" data-target=""> Termin erstellen</a>
+<!--<a href="/event/create" class="btn btn-default" type="button" data-toggle="" data-target=""> Termin erstellen</a>-->
 	<a href="/calendar" class="btn btn-default" type="button" data-toggle="" data-target=""> Kalender</a>
     <a href="/calendar/sync" class="btn btn-default" type="button" data-toggle="" data-target=""> Kalender synchronisieren</a>
 </div>
