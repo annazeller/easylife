@@ -64,7 +64,7 @@
                             <a class="btn btn-link" href="{{ route('password.request') }}">
                                 {{ __('Forgot Your Password?') }}
                             </a>
-                            <a class="pull-right" href="{{ route('register') }}">Register</a>
+                            <a class="pull-right" href= "/registerquestions">Register</a>
                         </p>
                     </div>
                 </div>
